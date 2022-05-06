@@ -1,0 +1,54 @@
+.principal{
+    position: absolute;
+}
+
+.boton_logo{
+    width: 150px;
+}
+
+.iconos{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.logout{
+    position: absolute;
+    right: 0;
+}
+
+.contenido{
+    background-image: url('../img/background.jpg');
+    background-size: auto;
+    background-position: center;
+    position: absolute;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.titulo{
+    font-family: 'Koulen';
+    display: flex;
+    align-items: center;
+    background-color: rgb(229, 27, 35);
+    box-shadow: rgba(229, 27, 35, 0.3) -2px 2px, rgba(229, 27, 35, 0.2) -4px 4px, rgba(229, 27, 35, 0.05) -6px 6px;
+    border-radius: 0px 0px 0px 15px;
+    padding: 15px;
+    position: absolute;
+    right: 0;
+    top:0;
+    margin-top: 63px;
+    font-size: large;
+    color: white;
+}
+
+.titulo--texto{
+    display: flex;
+    align-items: center;
+    padding-top: 2px;
+    margin-left: 5px;
+    height: 20px;
+}
