@@ -10,8 +10,15 @@ import TiposHardware from "./components/pages/TiposHardware";
 
 const theme = createTheme({
   palette: {
+    common: {
+      black: "#000",
+      white: "#fff",
+    },
     primary: {
-      main: "#FFFFFF",
+      main: "#f5cdcd",
+      light: "#FBE4E4",
+      dark: "#FD8686",
+      contrastText: "#FFFFFF",
     },
     secondary: {
       main: "#e51b23",
@@ -27,6 +34,9 @@ const theme = createTheme({
     },
     success: {
       main: "#179A54",
+    },
+    white: {
+      main: "#FFFFFF",
     },
   },
 });

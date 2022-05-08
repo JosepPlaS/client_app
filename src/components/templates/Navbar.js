@@ -18,10 +18,17 @@ import LogoutIcon from "@mui/icons-material/Logout"; // LOGOUT
 export default function Navbar({ children }) {
   const { global } = useContext(AppContext);
   const navigate = useNavigate();
+
+  const styles = {
+    customizeToolbar: {
+      minHeight: 36,
+    },
+  };
+
   return (
     <>
-      <AppBar>
-        <Toolbar disableGutters>
+      <AppBar color="white">
+        <Toolbar style={{ minHeight: "65px" }} disableGutters>
           <div className="principal">
             <Button onClick={() => navigate("/inicio")}>
               <img className="boton_logo" src={icon} alt="INCIDENCIAS" />
