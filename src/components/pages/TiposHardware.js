@@ -6,70 +6,102 @@ import Titulo from "../atoms/Titulo";
 import Tabla from "../molecules/Tabla";
 import BuscarAnadir, { filtrar } from "../atoms/BuscarAnadir";
 import Cargando from "../atoms/Cargando";
-import { getTiposHardware } from "../../services/TipoHardwareAPI";
+import {
+  deleteTipoHardware,
+  getTiposHardware,
+} from "../../services/TipoHardwareAPI";
 import AlertCustom from "../atoms/AlertCustom";
 import DialogTipoHardware from "../molecules/DialogTipoHardware";
 
 export default function TiposHardware() {
   const { setGlobal } = useContext(AppContext);
 
+  const [update, setUpdate] = useState(false);
+
   const titulos = ["Nombre: "];
   const columnas = ["nombre"];
   const [tipos_hardware, setTipos_hardware] = useState();
+  const [filtro, setFiltro] = useState();
+
+  const [tipoHwId, setTipoHwId] = useState();
 
   const [alert, setAlert] = useState(false);
   const [alertText, setAlertText] = useState("");
-
-  const [filtro, setFiltro] = useState();
+  const [alertType, setAlertType] = useState("success");
 
   useEffect(() => {
-    setGlobal(
-      (old) => ({
-        ...old,
-        pageTitle: (
-          <Titulo
-            icono={<KeyboardAltIcon fontSize="small" />}
-            texto="Tipos de Hardware"
-          />
-        ),
-      }),
-      []
-    );
+    setGlobal((old) => ({
+      ...old,
+      pageTitle: (
+        <Titulo
+          icono={<KeyboardAltIcon fontSize="small" />}
+          texto="Tipos de Hardware"
+        />
+      ),
+    }));
 
     getTiposHardware()
       .then((response) => response.json())
       .then((json) => setTipos_hardware(json));
-  }, [setGlobal]);
+  }, [setGlobal, update]);
 
-  function crear() {}
+  const [openDialog, setOpenDialog] = useState(false);
 
-  function editar(id) {
-    console.log("Editar - " + id);
+  const handleCloseDialog = () => {
+    setTipoHwId(undefined);
+    setOpenDialog(false);
+  };
+
+  function actualizar() {
+    setUpdate((old) => !old);
   }
 
-  function eliminar(id) {
-    console.log("Eliminar - " + id);
+  function btCrear() {
+    setOpenDialog(true);
+  }
+
+  function btEditar(id) {
+    setTipoHwId(id);
+    setOpenDialog(true);
+  }
+
+  function btEliminar(id) {
+    deleteTipoHardware(id).then((response) => {
+      if (response.status === 200) {
+        actualizar();
+      } else {
+        setAlert(true);
+        setAlertText("No se ha podido eliminar el tipo de hardware.");
+        setAlertType("error");
+      }
+    });
   }
 
   return (
     <>
       {tipos_hardware ? (
         <div className="pagina">
-          <BuscarAnadir filtro={setFiltro} crear={crear} />
+          <BuscarAnadir filtro={setFiltro} crear={btCrear} />
           <Tabla
             idLabel={"id"}
             titulos={titulos}
             columnas={columnas}
             datos={filtrar(tipos_hardware, filtro)}
-            editar={(id) => editar(id)}
-            eliminar={(id) => eliminar(id)}
+            editar={(id) => btEditar(id)}
+            eliminar={(id) => btEliminar(id)}
             perm={2}
           />
           <AlertCustom
             open={alert}
             setOpen={setAlert}
-            severity="error"
+            severity={alertType}
             text={alertText}
+          />
+          <DialogTipoHardware
+            open={openDialog}
+            onClose={handleCloseDialog}
+            actualizar={actualizar}
+            id={tipoHwId}
           />
         </div>
       ) : (

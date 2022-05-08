@@ -38,6 +38,9 @@ const theme = createTheme({
     white: {
       main: "#FFFFFF",
     },
+    text: {
+      main: "#757575",
+    },
   },
 });
 

@@ -2,7 +2,7 @@
     margin: 10px 70px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: end;
+    justify-content: flex-end;
 }
 
 .BuscarAnadir--buscador{
@@ -24,6 +24,14 @@
 }
 
 .ButtonCustom--texto{
+    font-family: 'Koulen';
+    display: flex;
+    align-items: center;
+    padding-top: 3px;
+    height: 20px;
+}
+
+.ButtonCustom--texto--icono{
     font-family: 'Koulen';
     display: flex;
     align-items: center;
@@ -56,4 +64,15 @@
     height: 40px;
 }
 
+.texFieldCustom{
+    height: 80px;
+}
 
+.texFieldCustom--error{
+    color: white;
+    margin-left: 5px;
+    padding: 2px;
+    background-color: #e51b23;
+    border-radius: 0px 8px 0px 8px;
+    box-shadow: rgba(229, 27, 35, 0.3) 1px 1px, rgba(229, 27, 35, 0.2) 2px 2px, rgba(229, 27, 35, 0.05) 3px 3px;
+}

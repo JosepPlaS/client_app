@@ -1,0 +1,30 @@
+/* ONE COLUMN DIALOGS */
+.dialog{
+    min-width: 400px;
+    background-color: rgba(224, 224, 224, 0.8);
+    padding:15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dialog--oneColumn{
+    margin-bottom: 15px;
+}
+
+.dialog--oneColumn--title{
+    color:#3d3d3d;
+    margin-bottom: 30px;
+}
+
+.dialog--oneColumn--buttons--container{
+    display: flex;
+}
+
+.dialog--oneColumn--buttons{
+    margin-left: 5px;
+}
+
+.dialog--oneColumn--buttons > *{
+    width: 100px;
+}

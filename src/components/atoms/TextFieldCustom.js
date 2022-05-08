@@ -7,11 +7,12 @@ export default function TextFieldCustom({
   disabled,
   readOnly,
   multiLine,
+  color,
+  errors,
 }) {
   return (
     <div className="texFieldCustom">
       <TextField
-        style={{ height: "30px" }}
         label={label}
         variant="outlined"
         value={value}
@@ -21,8 +22,9 @@ export default function TextFieldCustom({
           readOnly: readOnly,
         }}
         multiline={multiLine ? multiLine : undefined}
-        color={readOnly ? "secondary" : "primary"}
+        color={color ? color : readOnly ? "secondary" : "primary"}
       />
+      {errors && <div className="texFieldCustom--error">{errors}</div>}
     </div>
   );
 }

@@ -2,15 +2,23 @@ import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { getTipoHardware } from "../../services/TipoHardwareAPI";
+import {
+  getTipoHardware,
+  postTipoHardware,
+  putTipoHardware,
+} from "../../services/TipoHardwareAPI";
 import { Dialog } from "@mui/material";
 import TextFieldCustom from "../atoms/TextFieldCustom";
 import ButtonCustom from "../atoms/ButtonCustom";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+
+import "./Dialog.css";
 
 export default function DialogTipoHardware({ open, onClose, actualizar, id }) {
   const schema = yup
     .object({
-      nombre: yup.string().required("Debes de introducir un nombre."),
+      nombre: yup.string().required("Introduce un nombre."),
     })
     .required();
 
@@ -40,29 +48,55 @@ export default function DialogTipoHardware({ open, onClose, actualizar, id }) {
     }
   }, [id, reset, onClose]);
 
-  const onSubmit = () => {};
+  const onSubmit = (data) => {
+    if (!id) {
+      postTipoHardware(data);
+    } else {
+      putTipoHardware(id, data);
+    }
+    actualizar();
+    onClose();
+  };
 
   return (
-    <Dialog open={open} onClose={onClose} onSubmit={handleSubmit(onSubmit)}>
+    <Dialog open={open} onClose={onClose}>
       <form className="dialog">
         <div className="dialog--oneColumn">
           <div className="dialog--oneColumn--title">
-            <h3>{id === 0 ? "Crear " : "Modificar "}pieza:</h3>
+            <h3>{!id ? "Crear " : "Modificar "}tipo de hardware:</h3>
           </div>
           <Controller
             name="nombre"
             control={control}
-            render={({ field: { onChange, value } }) => <TextFieldCustom />}
+            render={({ field: { onChange, value } }) => (
+              <TextFieldCustom
+                color={"text"}
+                label={"Nombre: "}
+                value={value}
+                onChange={onChange}
+                errors={errors.nombre?.message}
+              />
+            )}
           />
         </div>
-        <div className="dialog--oneColumn--buttons">
-          <ButtonCustom />
-          <ButtonCustom
-            onClick={onClose}
-            variant="contained"
-            color="error"
-            label="Cancelar"
-          />
+        <div className="dialog--oneColumn--buttons--container">
+          <div className="dialog--oneColumn--buttons">
+            <ButtonCustom
+              label={"Aceptar"}
+              color={"success"}
+              onClick={handleSubmit(onSubmit)}
+              icon={<CheckCircleOutlineIcon fontSize="small" />}
+            />
+          </div>
+          <div className="dialog--oneColumn--buttons">
+            <ButtonCustom
+              onClick={onClose}
+              variant="contained"
+              color="error"
+              label="Cancelar"
+              icon={<CancelOutlinedIcon fontSize="small" />}
+            />
+          </div>
         </div>
       </form>
     </Dialog>
