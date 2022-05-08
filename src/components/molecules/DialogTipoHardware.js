@@ -31,7 +31,7 @@ export default function DialogTipoHardware({ open, onClose, actualizar, id }) {
   });
 
   useEffect(() => {
-    if (id !== 0) {
+    if (id) {
       getTipoHardware(id)
         .then((response) => response.json())
         .then((json) => reset(json));
@@ -44,9 +44,9 @@ export default function DialogTipoHardware({ open, onClose, actualizar, id }) {
 
   return (
     <Dialog open={open} onClose={onClose} onSubmit={handleSubmit(onSubmit)}>
-      <form className="dialog--one">
-        <div className="dialog--one--column">
-          <div className="dialog--one--title">
+      <form className="dialog">
+        <div className="dialog--oneColumn">
+          <div className="dialog--oneColumn--title">
             <h3>{id === 0 ? "Crear " : "Modificar "}pieza:</h3>
           </div>
           <Controller
@@ -55,7 +55,7 @@ export default function DialogTipoHardware({ open, onClose, actualizar, id }) {
             render={({ field: { onChange, value } }) => <TextFieldCustom />}
           />
         </div>
-        <div className="dialog--one--buttons">
+        <div className="dialog--oneColumn--buttons">
           <ButtonCustom />
           <ButtonCustom
             onClick={onClose}

@@ -5,6 +5,17 @@ import AddIcon from "@mui/icons-material/Add";
 
 import "./atoms.css";
 
+export function filtrar(datos, filtro) {
+  if (!filtro) return datos;
+  return datos.filter((dato) =>
+    Object.keys(dato).some(
+      (key) =>
+        typeof dato[key] === "string" &&
+        dato[key].toLowerCase().includes(filtro.toLowerCase())
+    )
+  );
+}
+
 export default function BuscarAnadir({ filtro, crear }) {
   return (
     <div className="BuscarAnadir--contenedor">

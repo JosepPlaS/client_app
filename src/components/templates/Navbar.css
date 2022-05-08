@@ -9,11 +9,13 @@
 .iconos{
     width: 100%;
     display: flex;
+    min-width: 80%;
     margin-left: 200px;
-    margin-right: 200px;
+    margin-right: 40px;
+    padding-right: 160px;
     justify-content: center;
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
 }
 
 .logout{

@@ -2,11 +2,12 @@
     margin: 10px 70px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: end;
 }
 
 .BuscarAnadir--buscador{
     width: 300px;
+    margin-right: 10px;
     margin-bottom: 5px;
 }
 
@@ -44,6 +45,15 @@
 }
 .cargando > *{
     margin:10px;
+}
+
+.alertCustom{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin-left: 20px;
+    margin-bottom: 30px;
+    height: 40px;
 }
 
 

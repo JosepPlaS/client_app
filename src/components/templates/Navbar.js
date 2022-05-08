@@ -30,7 +30,7 @@ export default function Navbar({ children }) {
       <AppBar color="white">
         <Toolbar style={{ minHeight: "65px" }} disableGutters>
           <div className="principal">
-            <Button onClick={() => navigate("/inicio")}>
+            <Button onClick={() => navigate("")}>
               <img className="boton_logo" src={icon} alt="INCIDENCIAS" />
             </Button>
             <IconButton onClick={() => navigate(-1)}>

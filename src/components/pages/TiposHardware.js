@@ -7,6 +7,8 @@ import Tabla from "../molecules/Tabla";
 import BuscarAnadir, { filtrar } from "../atoms/BuscarAnadir";
 import Cargando from "../atoms/Cargando";
 import { getTiposHardware } from "../../services/TipoHardwareAPI";
+import AlertCustom from "../atoms/AlertCustom";
+import DialogTipoHardware from "../molecules/DialogTipoHardware";
 
 export default function TiposHardware() {
   const { setGlobal } = useContext(AppContext);
@@ -14,6 +16,9 @@ export default function TiposHardware() {
   const titulos = ["Nombre: "];
   const columnas = ["nombre"];
   const [tipos_hardware, setTipos_hardware] = useState();
+
+  const [alert, setAlert] = useState(false);
+  const [alertText, setAlertText] = useState("");
 
   const [filtro, setFiltro] = useState();
 
@@ -36,20 +41,7 @@ export default function TiposHardware() {
       .then((json) => setTipos_hardware(json));
   }, [setGlobal]);
 
-  function filtrar(datos, filtro) {
-    if (!filtro) return datos;
-    return datos.filter((dato) =>
-      Object.keys(dato).some(
-        (key) =>
-          typeof dato[key] === "string" &&
-          dato[key].toLowerCase().includes(filtro.toLowerCase())
-      )
-    );
-  }
-
-  function crear() {
-    console.log("crear");
-  }
+  function crear() {}
 
   function editar(id) {
     console.log("Editar - " + id);
@@ -72,6 +64,12 @@ export default function TiposHardware() {
             editar={(id) => editar(id)}
             eliminar={(id) => eliminar(id)}
             perm={2}
+          />
+          <AlertCustom
+            open={alert}
+            setOpen={setAlert}
+            severity="error"
+            text={alertText}
           />
         </div>
       ) : (

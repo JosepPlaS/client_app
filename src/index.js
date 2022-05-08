@@ -8,7 +8,7 @@ import { AppContextProvider } from "./AppContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <BrowserRouter basename={"/"}>
+  <BrowserRouter basename={""}>
     <AppContextProvider initValue={{}}>
       <App />
     </AppContextProvider>

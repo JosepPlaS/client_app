@@ -46,7 +46,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <Navbar>
         <Routes>
-          <Route path="/inicio" element={<Inicio />} />
+          <Route path="" element={<Inicio />} />
           <Route path="/incidencias" element={<Incidencias />} />
           <Route path="/departamentos" element={<Departamentos />} />
           <Route path="/tipos_hardware" element={<TiposHardware />} />
