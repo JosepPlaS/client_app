@@ -18,3 +18,44 @@ body {
   max-width: 900px;
   min-height: 100%;
 }
+
+.login{
+  background-image: url('./components/img/background.jpg');
+  background-size: auto;
+  background-position: center;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.loginCard{
+  margin: auto;
+  margin-top: 250px;
+  width: 400px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.loginCardPicture{
+  width: 100%;
+  text-align: center;
+}
+
+.loginCard img{
+  width: 320;
+  margin: 25px 30px;
+}
+
+.loginTf{
+  text-align: center;
+}
+
+.loginBotones{
+  text-align: center;
+  padding-bottom: 25px;
+}
+
+.loginBotones button{
+  margin:5px;
+}

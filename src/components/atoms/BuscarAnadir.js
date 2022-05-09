@@ -2,6 +2,7 @@ import { InputAdornment, OutlinedInput, Paper } from "@mui/material";
 import ButtonCustom from "./ButtonCustom";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 
 import "./atoms.css";
 
@@ -16,7 +17,7 @@ export function filtrar(datos, filtro) {
   );
 }
 
-export default function BuscarAnadir({ filtro, crear }) {
+export default function BuscarAnadir({ filtro, crear, actualizar }) {
   return (
     <div className="BuscarAnadir--contenedor">
       <div className="BuscarAnadir--buscador">
@@ -32,14 +33,28 @@ export default function BuscarAnadir({ filtro, crear }) {
           />
         </Paper>
       </div>
-      <ButtonCustom
-        onClick={() => crear()}
-        icon={<AddIcon fontSize="small" />}
-        label="Crear"
-      />
-      <div className="BuscarAnadir--boton">
-        <div className="BuscarAnadir--texto"></div>
-      </div>
+      {(crear || actualizar) && (
+        <div className="BuscarAnadir--botones">
+          {actualizar && (
+            <div className="BuscarAnadir--boton">
+              <ButtonCustom
+                onClick={() => actualizar()}
+                icon={<AutorenewIcon fontSize="small" />}
+                label="Recargar"
+              />
+            </div>
+          )}
+          {crear && (
+            <div className="BuscarAnadir--boton">
+              <ButtonCustom
+                onClick={() => crear()}
+                icon={<AddIcon fontSize="small" />}
+                label="Crear"
+              />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

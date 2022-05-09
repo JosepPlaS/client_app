@@ -1,7 +1,6 @@
 /* ONE COLUMN DIALOGS */
 .dialog{
     min-width: 400px;
-    background-color: rgba(224, 224, 224, 0.8);
     padding:15px;
     display: flex;
     flex-direction: column;
@@ -15,6 +14,7 @@
 .dialog--oneColumn--title{
     color:#3d3d3d;
     margin-bottom: 30px;
+    text-align: center;
 }
 
 .dialog--oneColumn--buttons--container{
@@ -27,4 +27,8 @@
 
 .dialog--oneColumn--buttons > *{
     width: 100px;
+}
+
+.tfDialogDepartamento{
+    width: 400px;
 }

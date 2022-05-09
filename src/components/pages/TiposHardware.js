@@ -90,7 +90,11 @@ export default function TiposHardware() {
     <>
       {tipos_hardware ? (
         <div className="pagina">
-          <BuscarAnadir filtro={setFiltro} crear={btCrear} />
+          <BuscarAnadir
+            filtro={setFiltro}
+            crear={btCrear}
+            actualizar={actualizar}
+          />
           <Tabla
             idLabel={"id"}
             titulos={titulos}

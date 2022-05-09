@@ -9,10 +9,13 @@ export default function TextFieldCustom({
   multiLine,
   color,
   errors,
+  className,
+  password,
 }) {
   return (
     <div className="texFieldCustom">
       <TextField
+        className={className || ""}
         label={label}
         variant="outlined"
         value={value}
@@ -23,6 +26,7 @@ export default function TextFieldCustom({
         }}
         multiline={multiLine ? multiLine : undefined}
         color={color ? color : readOnly ? "secondary" : "primary"}
+        type={password ? "password" : "text"}
       />
       {errors && <div className="texFieldCustom--error">{errors}</div>}
     </div>

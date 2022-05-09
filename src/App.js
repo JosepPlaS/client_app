@@ -7,6 +7,8 @@ import Departamentos from "./components/pages/Departamentos";
 import Incidencias from "./components/pages/Incidencias";
 import Permisos from "./components/pages/Permisos";
 import TiposHardware from "./components/pages/TiposHardware";
+import Login from "./components/pages/Login";
+import { useState, useEffect } from "react";
 
 const theme = createTheme({
   palette: {
@@ -45,17 +47,27 @@ const theme = createTheme({
 });
 
 export default function App() {
+  const [user, setUser] = useState(false);
+
+  useEffect(() => {
+    localStorage.getItem("incidenciasUser") ? setUser(true) : setUser(false);
+  }, user);
+
   return (
     <ThemeProvider theme={theme}>
-      <Navbar>
-        <Routes>
-          <Route path="" element={<Inicio />} />
-          <Route path="/incidencias" element={<Incidencias />} />
-          <Route path="/departamentos" element={<Departamentos />} />
-          <Route path="/tipos_hardware" element={<TiposHardware />} />
-          <Route path="/permisos" element={<Permisos />} />
-        </Routes>
-      </Navbar>
+      {user ? (
+        <Navbar>
+          <Routes>
+            <Route path="" element={<Inicio />} />
+            <Route path="/incidencias" element={<Incidencias />} />
+            <Route path="/departamentos" element={<Departamentos />} />
+            <Route path="/tipos_hardware" element={<TiposHardware />} />
+            <Route path="/permisos" element={<Permisos />} />
+          </Routes>
+        </Navbar>
+      ) : (
+        <Login />
+      )}
     </ThemeProvider>
   );
 }
