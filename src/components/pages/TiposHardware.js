@@ -29,6 +29,17 @@ export default function TiposHardware() {
   const [alertText, setAlertText] = useState("");
   const [alertType, setAlertType] = useState("success");
 
+  function openAlert(text, type) {
+    if (alert) {
+      setAlert(true);
+    } else {
+      setAlert(false);
+      setAlert(true);
+    }
+    setAlertText(text);
+    setAlertType(type);
+  }
+
   useEffect(() => {
     setGlobal((old) => ({
       ...old,
@@ -70,9 +81,7 @@ export default function TiposHardware() {
       if (response.status === 200) {
         actualizar();
       } else {
-        setAlert(true);
-        setAlertText("No se ha podido eliminar el tipo de hardware.");
-        setAlertType("error");
+        openAlert("No se ha podido eliminar el tipo de hardware.", "error");
       }
     });
   }
@@ -86,7 +95,9 @@ export default function TiposHardware() {
             idLabel={"id"}
             titulos={titulos}
             columnas={columnas}
-            datos={filtrar(tipos_hardware, filtro)}
+            datos={filtrar(tipos_hardware, filtro).sort((a, b) =>
+              a.nombre.localeCompare(b.nombre)
+            )}
             editar={(id) => btEditar(id)}
             eliminar={(id) => btEliminar(id)}
             perm={2}
