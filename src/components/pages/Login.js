@@ -1,13 +1,55 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import LoginIcon from "@mui/icons-material/Login";
 
 import TextFieldCustom from "../atoms/TextFieldCustom";
 import ButtonCustom from "../atoms/ButtonCustom";
 import logo from "../img/logo.png";
+import AlertCustom from "../atoms/AlertCustom";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [usuario, setUsuario] = useState("");
   const [contrasena, setContrasena] = useState("");
+
+  const [alert, setAlert] = useState(false);
+  const [alertText, setAlertText] = useState("");
+  const [alertType, setAlertType] = useState("success");
+
+  function openAlert(text, type) {
+    setAlertText(text);
+    setAlertType(type);
+    if (alert) {
+      setAlert(true);
+    } else {
+      setAlert(false);
+      setAlert(true);
+    }
+  }
+
+  function login() {
+    const request = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: usuario, contrasena: contrasena }),
+    };
+    fetch("/api/login", request)
+      .then((response) =>
+        response.status === 200 || response.status === 401
+          ? response.json()
+          : openAlert("No se puede conectar con la base de datos", "error")
+      )
+      .then((json) => {
+        if (json) {
+          if (json.id) {
+            sessionStorage.setItem("incidenciasUser", JSON.stringify(json));
+            window.location.replace("");
+          } else {
+            openAlert(json.message, "error");
+          }
+        }
+      });
+  }
 
   return (
     <div className="login">
@@ -17,7 +59,7 @@ export default function Login() {
         </div>
         <div className="loginTf">
           <TextFieldCustom
-            label="Usuario: "
+            label="Email: "
             color="grey"
             value={usuario}
             onChange={(evnt) => setUsuario(evnt.target.value)}
@@ -35,13 +77,17 @@ export default function Login() {
             variant="contained"
             color="error"
             label="Login"
-            onClick={() =>
-              console.log("User: " + usuario + " - Pass: " + contrasena)
-            }
+            onClick={() => login()}
             icon={<LoginIcon fontSize="small" />}
           />
         </div>
       </div>
+      <AlertCustom
+        open={alert}
+        setOpen={setAlert}
+        severity={alertType}
+        text={alertText}
+      />
     </div>
   );
 }

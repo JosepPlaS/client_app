@@ -53,7 +53,12 @@ export default function Navbar({ children }) {
           </div>
           <div className="logout">
             <IconButton>
-              <LogoutIcon />
+              <LogoutIcon
+                onClick={() => {
+                  sessionStorage.removeItem("incidenciasUser");
+                  window.location.replace("");
+                }}
+              />
             </IconButton>
           </div>
         </Toolbar>

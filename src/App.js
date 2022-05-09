@@ -50,7 +50,7 @@ export default function App() {
   const [user, setUser] = useState(false);
 
   useEffect(() => {
-    localStorage.getItem("incidenciasUser") ? setUser(true) : setUser(false);
+    sessionStorage.getItem("incidenciasUser") ? setUser(true) : setUser(false);
   }, user);
 
   return (

@@ -18,7 +18,7 @@ export default function Departamentos() {
 
   const [update, setUpdate] = useState(false);
 
-  const titulos = ["Codigo: ", "Nombre: ", "Descripcion:"];
+  const titulos = ["Código: ", "Nombre: ", "Descripcion:"];
   const columnas = ["codigo", "nombre", "descripcion"];
   const [departamentos, setDepartamentos] = useState();
   const [filtro, setFiltro] = useState();
