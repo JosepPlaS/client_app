@@ -53,7 +53,7 @@ export default function Departamentos() {
 
     getDepartamentos()
       .then((response) => response.json())
-      .then((json) => setDepartamentos(json));
+      .then((json) => json && setDepartamentos(json));
   }, [setGlobal, update]);
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -81,7 +81,7 @@ export default function Departamentos() {
       if (response.status === 200) {
         actualizar();
       } else {
-        openAlert("No se ha podido eliminar el tipo de hardware.", "error");
+        openAlert("No se ha podido eliminar el departamento.", "error");
       }
     });
   }
@@ -120,7 +120,7 @@ export default function Departamentos() {
           />
         </div>
       ) : (
-        <Cargando texto="Cargando tipos de hardware." />
+        <Cargando texto="Cargando departamentos." />
       )}
     </>
   );

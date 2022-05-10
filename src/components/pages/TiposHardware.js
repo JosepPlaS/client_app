@@ -53,7 +53,7 @@ export default function TiposHardware() {
 
     getTiposHardware()
       .then((response) => response.json())
-      .then((json) => setTipos_hardware(json));
+      .then((json) => json && setTipos_hardware(json));
   }, [setGlobal, update]);
 
   const [openDialog, setOpenDialog] = useState(false);
