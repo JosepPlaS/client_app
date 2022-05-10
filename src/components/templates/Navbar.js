@@ -47,18 +47,18 @@ export default function Navbar({ children }) {
             <IconButton onClick={() => navigate("/tipos_hardware")}>
               <KeyboardAltIcon />
             </IconButton>
-            <IconButton onClick={() => navigate("/permisos")}>
+            <IconButton onClick={() => navigate("/roles")}>
               <LockIcon />
             </IconButton>
           </div>
           <div className="logout">
-            <IconButton>
-              <LogoutIcon
-                onClick={() => {
-                  sessionStorage.removeItem("incidenciasUser");
-                  window.location.replace("");
-                }}
-              />
+            <IconButton
+              onClick={() => {
+                sessionStorage.removeItem("incidenciasUser");
+                window.location.replace("");
+              }}
+            >
+              <LogoutIcon />
             </IconButton>
           </div>
         </Toolbar>

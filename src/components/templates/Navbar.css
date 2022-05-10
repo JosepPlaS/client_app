@@ -1,5 +1,6 @@
 .principal{
     position: absolute;
+    z-index: 999;
 }
 
 .boton_logo{
@@ -52,6 +53,23 @@
 }
 
 @media screen and (max-aspect-ratio: 4/3) {
+    .titulo {
+        font-family: 'Koulen';
+        display: flex;
+        align-items: center;
+        background-color: rgb(229, 27, 35);
+        box-shadow: rgba(229, 27, 35, 0.3) -2px 2px, rgba(229, 27, 35, 0.2) -4px 4px, rgba(229, 27, 35, 0.05) -6px 6px;
+        border-radius: 15px 0px 0px 0px;
+        padding: 15px;
+        position: absolute;
+        right: 0;
+        bottom:0;
+        font-size: large;
+        color: white;
+    }
+  }
+
+  @media (min-width: 1000) {
     .titulo {
         font-family: 'Koulen';
         display: flex;

@@ -5,7 +5,7 @@ import Navbar from "./components/templates/Navbar";
 import Inicio from "./components/pages/Inicio";
 import Departamentos from "./components/pages/Departamentos";
 import Incidencias from "./components/pages/Incidencias";
-import Permisos from "./components/pages/Permisos";
+import Roles from "./components/pages/Roles";
 import TiposHardware from "./components/pages/TiposHardware";
 import Login from "./components/pages/Login";
 import { useState, useEffect } from "react";
@@ -51,7 +51,7 @@ export default function App() {
 
   useEffect(() => {
     sessionStorage.getItem("incidenciasUser") ? setUser(true) : setUser(false);
-  }, user);
+  }, [user]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -62,7 +62,7 @@ export default function App() {
             <Route path="/incidencias" element={<Incidencias />} />
             <Route path="/departamentos" element={<Departamentos />} />
             <Route path="/tipos_hardware" element={<TiposHardware />} />
-            <Route path="/permisos" element={<Permisos />} />
+            <Route path="/roles" element={<Roles />} />
           </Routes>
         </Navbar>
       ) : (

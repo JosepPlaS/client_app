@@ -16,6 +16,7 @@ import DialogTipoHardware from "../molecules/DialogTipoHardware";
 export default function TiposHardware() {
   const { setGlobal } = useContext(AppContext);
 
+  const [permiso, setPermiso] = useState(0);
   const [update, setUpdate] = useState(false);
 
   const titulos = ["Nombre: "];
@@ -40,6 +41,15 @@ export default function TiposHardware() {
     setAlertType(type);
   }
 
+  function comprobarPermisos() {
+    let user = JSON.parse(sessionStorage.getItem("incidenciasUser"));
+    if (user) {
+      user.rol.permisos.map((perm) => perm.codigo === "ALTH" && setPermiso(2));
+    } else {
+      window.location.replace("");
+    }
+  }
+
   useEffect(() => {
     setGlobal((old) => ({
       ...old,
@@ -53,7 +63,9 @@ export default function TiposHardware() {
 
     getTiposHardware()
       .then((response) => response.json())
-      .then((json) => json && setTipos_hardware(json));
+      .then((json) => json && setTipos_hardware(json.reverse()));
+
+    comprobarPermisos();
   }, [setGlobal, update]);
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -94,17 +106,16 @@ export default function TiposHardware() {
             filtro={setFiltro}
             crear={btCrear}
             actualizar={actualizar}
+            disableCrear={permiso < 1}
           />
           <Tabla
             idLabel={"id"}
             titulos={titulos}
             columnas={columnas}
-            datos={filtrar(tipos_hardware, filtro).sort((a, b) =>
-              a.nombre.localeCompare(b.nombre)
-            )}
+            datos={filtrar(tipos_hardware, filtro)}
             editar={(id) => btEditar(id)}
             eliminar={(id) => btEliminar(id)}
-            perm={2}
+            perm={permiso}
           />
           <AlertCustom
             open={alert}

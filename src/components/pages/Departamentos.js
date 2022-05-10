@@ -53,7 +53,7 @@ export default function Departamentos() {
 
     getDepartamentos()
       .then((response) => response.json())
-      .then((json) => json && setDepartamentos(json));
+      .then((json) => json && setDepartamentos(json.reverse()));
   }, [setGlobal, update]);
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -99,9 +99,7 @@ export default function Departamentos() {
             idLabel={"id"}
             titulos={titulos}
             columnas={columnas}
-            datos={filtrar(departamentos, filtro).sort((a, b) =>
-              a.nombre.localeCompare(b.nombre)
-            )}
+            datos={filtrar(departamentos, filtro)}
             editar={(id) => btEditar(id)}
             eliminar={(id) => btEliminar(id)}
             perm={2}

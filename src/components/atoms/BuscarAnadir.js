@@ -17,7 +17,12 @@ export function filtrar(datos, filtro) {
   );
 }
 
-export default function BuscarAnadir({ filtro, crear, actualizar }) {
+export default function BuscarAnadir({
+  filtro,
+  crear,
+  actualizar,
+  disableCrear,
+}) {
   return (
     <div className="BuscarAnadir--contenedor">
       <div className="BuscarAnadir--buscador">
@@ -48,6 +53,7 @@ export default function BuscarAnadir({ filtro, crear, actualizar }) {
             <div className="BuscarAnadir--boton">
               <ButtonCustom
                 onClick={() => crear()}
+                disabled={disableCrear}
                 icon={<AddIcon fontSize="small" />}
                 label="Crear"
               />

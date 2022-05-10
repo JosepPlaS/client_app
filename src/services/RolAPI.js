@@ -39,3 +39,22 @@ export function deleteRol(id) {
   };
   return fetch("/api/rol/delete/" + id, request);
 }
+
+export function decoPermiso(codigo) {
+  switch (codigo) {
+    case "ADIN":
+      return "add incidencias";
+    case "MOIN":
+      return "mod/del incidencias";
+    case "ALTH":
+      return "add/mod/del tipo hardware";
+    case "ALRO":
+      return "add/mod/del roles";
+    case "IEDA":
+      return "importar/exportar datos";
+    case "INFO":
+      return "ver informes";
+    default:
+      return "ERROR DECO PERMISO";
+  }
+}

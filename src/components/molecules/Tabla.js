@@ -31,7 +31,7 @@ export default function Tabla({
                 {titulos.map((titulo, index) => (
                   <th key={"th" + index}>{titulo}</th>
                 ))}
-                {perm === 2 && <th className="editar_eliminar">Opciones:</th>}
+                {perm >= 2 && <th className="editar_eliminar">Opciones:</th>}
               </tr>
             </thead>
             <tbody>
@@ -40,7 +40,7 @@ export default function Tabla({
                   {columnas.map((columna, index) => (
                     <td key={"td" + index}>{dato[columna]}</td>
                   ))}
-                  {perm === 2 && (
+                  {perm >= 2 && (
                     <td className="editar_eliminar">
                       <IconButton onClick={() => editar(dato[idLabel])}>
                         <EditOutlinedIcon fontSize="small" />
