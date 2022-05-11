@@ -8,9 +8,11 @@ import BuscarAnadir, { filtrar } from "../atoms/BuscarAnadir";
 import Tabla from "../molecules/Tabla";
 import AlertCustom from "../atoms/AlertCustom";
 import Cargando from "../atoms/Cargando";
+import DialogRol from "../molecules/DialogRol";
 
 export default function Roles() {
   const { setGlobal } = useContext(AppContext);
+  const [permiso, setPermiso] = useState(0);
 
   const [update, setUpdate] = useState(false);
 
@@ -36,12 +38,31 @@ export default function Roles() {
     setAlertType(type);
   }
 
+  function comprobarPermisos() {
+    let user = JSON.parse(sessionStorage.getItem("incidenciasUser"));
+    if (user) {
+      user.rol.permisos.map((perm) => perm.codigo === "ALRO" && setPermiso(2));
+    } else {
+      window.location.replace("");
+    }
+  }
+
   function formatRoles(json) {
     let tmpRoles = [...json];
     tmpRoles.map((rol) => {
       let tmp = "";
       rol.permisos.map((permiso, index) => {
         switch (index) {
+          case 0:
+            tmp +=
+              decoPermiso(permiso.codigo).charAt(0).toUpperCase() +
+              decoPermiso(permiso.codigo).slice(1) +
+              (rol.permisos.length === 1
+                ? "."
+                : rol.permisos.length === 2
+                ? " y "
+                : ", ");
+            break;
           case rol.permisos.length - 2:
             tmp += decoPermiso(permiso.codigo) + " y ";
             break;
@@ -71,12 +92,12 @@ export default function Roles() {
     getRoles()
       .then((response) => response.json())
       .then((json) => json && setRoles(formatRoles(json.reverse())));
+    comprobarPermisos();
   }, [setGlobal, update]);
 
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleCloseDialog = () => {
-    setRolId(undefined);
     setOpenDialog(false);
   };
 
@@ -85,6 +106,7 @@ export default function Roles() {
   }
 
   function btCrear() {
+    setRolId(undefined);
     setOpenDialog(true);
   }
 
@@ -111,6 +133,7 @@ export default function Roles() {
             filtro={setFiltro}
             crear={btCrear}
             actualizar={actualizar}
+            disableCrear={permiso < 1}
           />
           <Tabla
             idLabel={"id"}
@@ -119,7 +142,8 @@ export default function Roles() {
             datos={filtrar(roles, filtro)}
             editar={(id) => btEditar(id)}
             eliminar={(id) => btEliminar(id)}
-            perm={2}
+            perm={permiso}
+            rol={true}
           />
           <AlertCustom
             open={alert}
@@ -127,12 +151,12 @@ export default function Roles() {
             severity={alertType}
             text={alertText}
           />
-          {/*<DialogRol
+          <DialogRol
             open={openDialog}
             onClose={handleCloseDialog}
             actualizar={actualizar}
-            id={RolId}
-      />*/}
+            id={rolId}
+          />
         </div>
       ) : (
         <Cargando texto="Cargando roles." />

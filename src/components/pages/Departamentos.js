@@ -59,7 +59,6 @@ export default function Departamentos() {
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleCloseDialog = () => {
-    setDepartamentoId(undefined);
     setOpenDialog(false);
   };
 
@@ -68,6 +67,7 @@ export default function Departamentos() {
   }
 
   function btCrear() {
+    setDepartamentoId(undefined);
     setOpenDialog(true);
   }
 

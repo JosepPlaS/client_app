@@ -100,7 +100,7 @@ export default function DialogDepartamento({ open, onClose, actualizar, id }) {
               render={({ field: { onChange, value } }) => (
                 <TextFieldCustom
                   color={"text"}
-                  className={"tfDialogDepartamento"}
+                  className={"tfDialogLong"}
                   label={"Codigo: "}
                   value={value}
                   onChange={onChange}
@@ -114,7 +114,7 @@ export default function DialogDepartamento({ open, onClose, actualizar, id }) {
               render={({ field: { onChange, value } }) => (
                 <TextFieldCustom
                   color={"text"}
-                  className={"tfDialogDepartamento"}
+                  className={"tfDialogLong"}
                   label={"Nombre: "}
                   value={value}
                   onChange={onChange}
@@ -128,7 +128,7 @@ export default function DialogDepartamento({ open, onClose, actualizar, id }) {
               render={({ field: { onChange, value } }) => (
                 <TextFieldCustom
                   color={"text"}
-                  className={"tfDialogDepartamento"}
+                  className={"tfDialogLong"}
                   label={"Descripcion: "}
                   value={value}
                   onChange={onChange}

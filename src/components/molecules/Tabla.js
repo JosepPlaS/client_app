@@ -14,6 +14,8 @@ export default function Tabla({
   perm,
   editar,
   eliminar,
+  rol,
+  profesor,
 }) {
   const [data, setData] = useState();
 
@@ -42,10 +44,16 @@ export default function Tabla({
                   ))}
                   {perm >= 2 && (
                     <td className="editar_eliminar">
-                      <IconButton onClick={() => editar(dato[idLabel])}>
+                      <IconButton
+                        onClick={() => editar(dato[idLabel])}
+                        disabled={rol && dato.nombre === "Administrador"}
+                      >
                         <EditOutlinedIcon fontSize="small" />
                       </IconButton>
-                      <IconButton onClick={() => eliminar(dato[idLabel])}>
+                      <IconButton
+                        onClick={() => eliminar(dato[idLabel])}
+                        disabled={rol && dato.nombre === "Administrador"}
+                      >
                         <DeleteOutlineOutlinedIcon fontSize="small" />
                       </IconButton>
                     </td>

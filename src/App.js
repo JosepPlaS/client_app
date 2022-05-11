@@ -9,6 +9,7 @@ import Roles from "./components/pages/Roles";
 import TiposHardware from "./components/pages/TiposHardware";
 import Login from "./components/pages/Login";
 import { useState, useEffect } from "react";
+import Profesores from "./components/pages/Profesores";
 
 const theme = createTheme({
   palette: {
@@ -60,6 +61,7 @@ export default function App() {
           <Routes>
             <Route path="" element={<Inicio />} />
             <Route path="/incidencias" element={<Incidencias />} />
+            <Route path="/profesores" element={<Profesores />} />
             <Route path="/departamentos" element={<Departamentos />} />
             <Route path="/tipos_hardware" element={<TiposHardware />} />
             <Route path="/roles" element={<Roles />} />

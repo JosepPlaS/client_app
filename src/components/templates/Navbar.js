@@ -14,16 +14,11 @@ import AssignmentIcon from "@mui/icons-material/Assignment"; // INCIDENCIA
 import LockIcon from "@mui/icons-material/Lock"; // ROLES
 import KeyboardAltIcon from "@mui/icons-material/KeyboardAlt"; // TIPOS HARDWARE
 import LogoutIcon from "@mui/icons-material/Logout"; // LOGOUT
+import PersonIcon from "@mui/icons-material/Person";
 
 export default function Navbar({ children }) {
   const { global } = useContext(AppContext);
   const navigate = useNavigate();
-
-  const styles = {
-    customizeToolbar: {
-      minHeight: 36,
-    },
-  };
 
   return (
     <>
@@ -40,6 +35,9 @@ export default function Navbar({ children }) {
           <div className="iconos">
             <IconButton onClick={() => navigate("/incidencias")}>
               <AssignmentIcon />
+            </IconButton>
+            <IconButton onClick={() => navigate("/profesores")}>
+              <PersonIcon />
             </IconButton>
             <IconButton onClick={() => navigate("/departamentos")}>
               <MeetingRoomIcon />

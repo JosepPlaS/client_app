@@ -1,7 +1,7 @@
 /* ONE COLUMN DIALOGS */
 .dialog{
     min-width: 400px;
-    padding:15px;
+    padding:25px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,12 +9,17 @@
 
 .dialog--oneColumn{
     margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 .dialog--oneColumn--title{
     color:#3d3d3d;
     margin-bottom: 30px;
     text-align: center;
+    margin-bottom: 10px;
 }
 
 .dialog--oneColumn--buttons--container{
@@ -29,6 +34,15 @@
     width: 100px;
 }
 
-.tfDialogDepartamento{
+.tfDialogLong{
     width: 400px;
+}
+
+.dialog--oneColumn--cb{
+    display: flex;
+}
+
+.dialog--oneColumn--cb--column{
+    display: flex;
+    flex-direction: column;
 }
