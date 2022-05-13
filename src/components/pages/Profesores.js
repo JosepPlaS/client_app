@@ -9,7 +9,7 @@ import AlertCustom from "../atoms/AlertCustom";
 import Cargando from "../atoms/Cargando";
 import { deleteProfesor, getProfesores } from "../../services/ProfesorAPI";
 
-export default function Profesores() {
+export default function Profesores({ openAlert }) {
   const { setGlobal } = useContext(AppContext);
 
   const [permiso, setPermiso] = useState(0);
@@ -22,21 +22,6 @@ export default function Profesores() {
   const [filtro, setFiltro] = useState();
 
   const [profesorId, setProfesorId] = useState();
-
-  const [alert, setAlert] = useState(false);
-  const [alertText, setAlertText] = useState("");
-  const [alertType, setAlertType] = useState("success");
-
-  function openAlert(text, type) {
-    if (alert) {
-      setAlert(true);
-    } else {
-      setAlert(false);
-      setAlert(true);
-    }
-    setAlertText(text);
-    setAlertType(type);
-  }
 
   function comprobarPermisos() {
     let user = JSON.parse(sessionStorage.getItem("incidenciasUser"));
@@ -122,12 +107,6 @@ export default function Profesores() {
             eliminar={(id) => btEliminar(id)}
             perm={permiso}
             profesor={true}
-          />
-          <AlertCustom
-            open={alert}
-            setOpen={setAlert}
-            severity={alertType}
-            text={alertText}
           />
           {/*<DialogProfesor
             open={openDialog}

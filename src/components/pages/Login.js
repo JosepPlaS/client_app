@@ -7,25 +7,10 @@ import logo from "../img/logo.png";
 import AlertCustom from "../atoms/AlertCustom";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function Login({ openAlert }) {
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState("");
   const [contrasena, setContrasena] = useState("");
-
-  const [alert, setAlert] = useState(false);
-  const [alertText, setAlertText] = useState("");
-  const [alertType, setAlertType] = useState("success");
-
-  function openAlert(text, type) {
-    setAlertText(text);
-    setAlertType(type);
-    if (alert) {
-      setAlert(true);
-    } else {
-      setAlert(false);
-      setAlert(true);
-    }
-  }
 
   function login() {
     const request = {
@@ -82,12 +67,6 @@ export default function Login() {
           />
         </div>
       </div>
-      <AlertCustom
-        open={alert}
-        setOpen={setAlert}
-        severity={alertType}
-        text={alertText}
-      />
     </div>
   );
 }

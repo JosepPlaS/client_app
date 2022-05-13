@@ -10,7 +10,7 @@ import AlertCustom from "../atoms/AlertCustom";
 import Cargando from "../atoms/Cargando";
 import DialogRol from "../molecules/DialogRol";
 
-export default function Roles() {
+export default function Roles({ openAlert }) {
   const { setGlobal } = useContext(AppContext);
   const [permiso, setPermiso] = useState(0);
 
@@ -22,21 +22,6 @@ export default function Roles() {
   const [filtro, setFiltro] = useState();
 
   const [rolId, setRolId] = useState();
-
-  const [alert, setAlert] = useState(false);
-  const [alertText, setAlertText] = useState("");
-  const [alertType, setAlertType] = useState("success");
-
-  function openAlert(text, type) {
-    if (alert) {
-      setAlert(true);
-    } else {
-      setAlert(false);
-      setAlert(true);
-    }
-    setAlertText(text);
-    setAlertType(type);
-  }
 
   function comprobarPermisos() {
     let user = JSON.parse(sessionStorage.getItem("incidenciasUser"));
@@ -91,7 +76,21 @@ export default function Roles() {
 
     getRoles()
       .then((response) => response.json())
-      .then((json) => json && setRoles(formatRoles(json.reverse())));
+      .then(
+        (json) =>
+          json &&
+          setRoles(
+            formatRoles(
+              json.sort((a, b) => {
+                if (a.permisos.length !== b.permisos.length) {
+                  return b.permisos.length - a.permisos.length;
+                } else {
+                  return b.nombre + a.nombre;
+                }
+              })
+            )
+          )
+      );
     comprobarPermisos();
   }, [setGlobal, update]);
 
@@ -143,13 +142,7 @@ export default function Roles() {
             editar={(id) => btEditar(id)}
             eliminar={(id) => btEliminar(id)}
             perm={permiso}
-            rol={true}
-          />
-          <AlertCustom
-            open={alert}
-            setOpen={setAlert}
-            severity={alertType}
-            text={alertText}
+            rol={false}
           />
           <DialogRol
             open={openDialog}

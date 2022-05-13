@@ -13,7 +13,7 @@ import {
 import AlertCustom from "../atoms/AlertCustom";
 import DialogTipoHardware from "../molecules/DialogTipoHardware";
 
-export default function TiposHardware() {
+export default function TiposHardware({ openAlert }) {
   const { setGlobal } = useContext(AppContext);
 
   const [permiso, setPermiso] = useState(0);
@@ -25,21 +25,6 @@ export default function TiposHardware() {
   const [filtro, setFiltro] = useState();
 
   const [tipoHwId, setTipoHwId] = useState();
-
-  const [alert, setAlert] = useState(false);
-  const [alertText, setAlertText] = useState("");
-  const [alertType, setAlertType] = useState("success");
-
-  function openAlert(text, type) {
-    if (alert) {
-      setAlert(true);
-    } else {
-      setAlert(false);
-      setAlert(true);
-    }
-    setAlertText(text);
-    setAlertType(type);
-  }
 
   function comprobarPermisos() {
     let user = JSON.parse(sessionStorage.getItem("incidenciasUser"));
@@ -63,7 +48,9 @@ export default function TiposHardware() {
 
     getTiposHardware()
       .then((response) => response.json())
-      .then((json) => json && setTipos_hardware(json.reverse()));
+      .then(
+        (json) => json && setTipos_hardware(json.sort((a, b) => b.id - a.id))
+      );
 
     comprobarPermisos();
   }, [setGlobal, update]);
@@ -89,13 +76,24 @@ export default function TiposHardware() {
   }
 
   function btEliminar(id) {
-    deleteTipoHardware(id).then((response) => {
-      if (response.status === 200) {
-        actualizar();
-      } else {
-        openAlert("No se ha podido eliminar el tipo de hardware.", "error");
-      }
-    });
+    deleteTipoHardware(id)
+      .then((response) => {
+        if (response.status === 200) {
+          actualizar();
+        } else {
+          return response.json();
+        }
+      })
+      .then((json) => {
+        if (json) {
+          json.message
+            ? openAlert(json.message, "error")
+            : openAlert(
+                "No se ha podido eliminar el tipo de hardware.",
+                "error"
+              );
+        }
+      });
   }
 
   return (
@@ -116,12 +114,6 @@ export default function TiposHardware() {
             editar={(id) => btEditar(id)}
             eliminar={(id) => btEliminar(id)}
             perm={permiso}
-          />
-          <AlertCustom
-            open={alert}
-            setOpen={setAlert}
-            severity={alertType}
-            text={alertText}
           />
           <DialogTipoHardware
             open={openDialog}

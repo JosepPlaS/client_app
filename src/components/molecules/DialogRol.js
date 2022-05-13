@@ -131,7 +131,7 @@ export default function DialogRol({ open, onClose, actualizar, id }) {
       reset({ nombre: "" });
     }
     comprobarPermisos();
-  }, [id, reset]);
+  }, [id, reset, onClose]);
 
   const onSubmit = (data) => {
     let newRol = {

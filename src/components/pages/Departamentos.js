@@ -13,7 +13,7 @@ import {
 import AlertCustom from "../atoms/AlertCustom";
 import DialogDepartamento from "../molecules/DialogDepartamento";
 
-export default function Departamentos() {
+export default function Departamentos({ openAlert }) {
   const { setGlobal } = useContext(AppContext);
 
   const [update, setUpdate] = useState(false);
@@ -24,21 +24,6 @@ export default function Departamentos() {
   const [filtro, setFiltro] = useState();
 
   const [departamentoId, setDepartamentoId] = useState();
-
-  const [alert, setAlert] = useState(false);
-  const [alertText, setAlertText] = useState("");
-  const [alertType, setAlertType] = useState("success");
-
-  function openAlert(text, type) {
-    if (alert) {
-      setAlert(true);
-    } else {
-      setAlert(false);
-      setAlert(true);
-    }
-    setAlertText(text);
-    setAlertType(type);
-  }
 
   useEffect(() => {
     setGlobal((old) => ({
@@ -104,17 +89,12 @@ export default function Departamentos() {
             eliminar={(id) => btEliminar(id)}
             perm={2}
           />
-          <AlertCustom
-            open={alert}
-            setOpen={setAlert}
-            severity={alertType}
-            text={alertText}
-          />
           <DialogDepartamento
             open={openDialog}
             onClose={handleCloseDialog}
             actualizar={actualizar}
             id={departamentoId}
+            openAlert={openAlert}
           />
         </div>
       ) : (

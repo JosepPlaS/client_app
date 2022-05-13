@@ -10,6 +10,7 @@ import TiposHardware from "./components/pages/TiposHardware";
 import Login from "./components/pages/Login";
 import { useState, useEffect } from "react";
 import Profesores from "./components/pages/Profesores";
+import AlertCustom from "./components/atoms/AlertCustom";
 
 const theme = createTheme({
   palette: {
@@ -54,22 +55,55 @@ export default function App() {
     sessionStorage.getItem("incidenciasUser") ? setUser(true) : setUser(false);
   }, [user]);
 
+  const [alert, setAlert] = useState(false);
+  const [alertText, setAlertText] = useState("");
+  const [alertType, setAlertType] = useState("success");
+
+  function openAlert(text, type) {
+    if (alert) {
+      setAlert(true);
+    } else {
+      setAlert(false);
+      setAlert(true);
+    }
+    setAlertText(text);
+    setAlertType(type);
+  }
+
   return (
     <ThemeProvider theme={theme}>
       {user ? (
         <Navbar>
           <Routes>
             <Route path="" element={<Inicio />} />
-            <Route path="/incidencias" element={<Incidencias />} />
-            <Route path="/profesores" element={<Profesores />} />
-            <Route path="/departamentos" element={<Departamentos />} />
-            <Route path="/tipos_hardware" element={<TiposHardware />} />
-            <Route path="/roles" element={<Roles />} />
+            <Route
+              path="/incidencias"
+              element={<Incidencias openAlert={openAlert} />}
+            />
+            <Route
+              path="/profesores"
+              element={<Profesores openAlert={openAlert} />}
+            />
+            <Route
+              path="/departamentos"
+              element={<Departamentos openAlert={openAlert} />}
+            />
+            <Route
+              path="/tipos_hardware"
+              element={<TiposHardware openAlert={openAlert} />}
+            />
+            <Route path="/roles" element={<Roles openAlert={openAlert} />} />
           </Routes>
         </Navbar>
       ) : (
-        <Login />
+        <Login openAlert={openAlert} />
       )}
+      <AlertCustom
+        open={alert}
+        setOpen={setAlert}
+        severity={alertType}
+        text={alertText}
+      />
     </ThemeProvider>
   );
 }
