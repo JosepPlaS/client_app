@@ -12,11 +12,26 @@ import TextFieldCustom from "../atoms/TextFieldCustom";
 import ButtonCustom from "../atoms/ButtonCustom";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-
-import "./Dialog.css";
 import AlertCustom from "../atoms/AlertCustom";
 
+import "./Dialog.css";
+
 export default function DialogTipoHardware({ open, onClose, actualizar, id }) {
+  const [alert, setAlert] = useState(false);
+  const [alertText, setAlertText] = useState("");
+  const [alertType, setAlertType] = useState("success");
+
+  const openAlert = (text, type) => {
+    if (alert) {
+      setAlert(true);
+    } else {
+      setAlert(false);
+      setAlert(true);
+    }
+    setAlertText(text);
+    setAlertType(type);
+  };
+
   const schema = yup
     .object({
       nombre: yup.string().required("Introduce un nombre."),
@@ -48,37 +63,24 @@ export default function DialogTipoHardware({ open, onClose, actualizar, id }) {
   }, [id, reset, onClose]);
 
   const onSubmit = (data) => {
-    (!id ? postTipoHardware(data) : putTipoHardware(id, data)).then(
-      (response) => {
+    (!id ? postTipoHardware(data) : putTipoHardware(id, data))
+      .then((response) => {
         if (response.status === 200) {
           actualizar();
           onClose();
+        } else if (response.status === 402) {
+          return response.json();
         } else {
           openAlert(
             "No se ha podido " +
               (id ? "modificar" : "introducir") +
-              " el tipo de hardware.",
+              " el departamento.",
             "error"
           );
         }
-      }
-    );
+      })
+      .then((json) => json && openAlert(json.message, "error"));
   };
-
-  const [alert, setAlert] = useState(false);
-  const [alertText, setAlertText] = useState("");
-  const [alertType, setAlertType] = useState("success");
-
-  function openAlert(text, type) {
-    if (alert) {
-      setAlert(true);
-    } else {
-      setAlert(false);
-      setAlert(true);
-    }
-    setAlertText(text);
-    setAlertType(type);
-  }
 
   return (
     <>
@@ -123,7 +125,6 @@ export default function DialogTipoHardware({ open, onClose, actualizar, id }) {
           </div>
         </form>
       </Dialog>
-
       <AlertCustom
         open={alert}
         setOpen={setAlert}

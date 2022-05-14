@@ -15,7 +15,7 @@ body {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   margin: auto;
   padding-top: 65px;
-  max-width: 900px;
+  max-width: 1000px;
   min-height: 100%;
 }
 
@@ -59,4 +59,26 @@ body {
 
 .loginBotones button{
   margin:5px;
+}
+
+.inicio--container{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position:absolute;
+  max-width: 1000px;
+  height: 95%;
+  margin-top: -60px;
+}
+
+.bigButtons--container{
+  margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.bigButtons--container > *{
+  margin:10px
 }

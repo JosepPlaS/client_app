@@ -5,9 +5,10 @@ import AppContext from "../../AppContext";
 import Titulo from "../atoms/Titulo";
 import BuscarAnadir, { filtrar } from "../atoms/BuscarAnadir";
 import Tabla from "../molecules/Tabla";
-import AlertCustom from "../atoms/AlertCustom";
 import Cargando from "../atoms/Cargando";
 import { deleteProfesor, getProfesores } from "../../services/ProfesorAPI";
+import DialogProfesor from "../molecules/DialogProfesor";
+import TituloPagina from "../atoms/TituloPagina";
 
 export default function Profesores({ openAlert }) {
   const { setGlobal } = useContext(AppContext);
@@ -16,8 +17,14 @@ export default function Profesores({ openAlert }) {
 
   const [update, setUpdate] = useState(false);
 
-  const titulos = ["Nombre: ", "Dni: ", "Email: "];
-  const columnas = ["nombreCompleto", "dni", "email"];
+  const titulos = ["Nombre: ", "Dni: ", "Email: ", "Departamento: ", "Rol: "];
+  const columnas = [
+    "nombreCompleto",
+    "dni",
+    "email",
+    "departamentoNombre",
+    "rolNombre",
+  ];
   const [profesores, setProfesores] = useState();
   const [filtro, setFiltro] = useState();
 
@@ -25,7 +32,6 @@ export default function Profesores({ openAlert }) {
 
   function comprobarPermisos() {
     let user = JSON.parse(sessionStorage.getItem("incidenciasUser"));
-    console.log(user);
     if (user) {
       user.rol.nombre === "Administrador" ? setPermiso(2) : setPermiso(0);
     } else {
@@ -39,8 +45,13 @@ export default function Profesores({ openAlert }) {
       if (profesor.email !== "root") {
         profesor.nombreCompleto =
           profesor.nombre + " " + profesor.apellido1 + " " + profesor.apellido2;
+        profesor.departamentoNombre =
+          (profesor.departamento && profesor.departamento.nombre) ||
+          "No seleccionado";
+        profesor.rolNombre = profesor.rol.nombre;
         newProfesores.push(profesor);
       }
+      return undefined;
     });
     return newProfesores;
   }
@@ -56,7 +67,7 @@ export default function Profesores({ openAlert }) {
       .then((response) => response.json())
       .then((json) => setProfesores(formatProfesor(json)));
     comprobarPermisos();
-  }, [setGlobal]);
+  }, [setGlobal, update]);
 
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -79,19 +90,31 @@ export default function Profesores({ openAlert }) {
   }
 
   function btEliminar(id) {
-    deleteProfesor(id).then((response) => {
-      if (response.status === 200) {
-        actualizar();
-      } else {
-        openAlert("No se ha podido eliminar el profesor.", "error");
-      }
-    });
+    deleteProfesor(id)
+      .then((response) => {
+        if (response.status === 200) {
+          actualizar();
+        } else {
+          return response.json();
+        }
+      })
+      .then((json) => {
+        if (json) {
+          json.message
+            ? openAlert(json.message, "error")
+            : openAlert("No se ha podido eliminar el profesor.", "error");
+        }
+      });
   }
 
   return (
-    <>
+    <div className="pagina">
+      <TituloPagina
+        icon={<PersonIcon fontSize="large" />}
+        text={"Lista de profesores:"}
+      />
       {profesores ? (
-        <div className="pagina">
+        <>
           <BuscarAnadir
             filtro={setFiltro}
             crear={btCrear}
@@ -108,16 +131,17 @@ export default function Profesores({ openAlert }) {
             perm={permiso}
             profesor={true}
           />
-          {/*<DialogProfesor
+          <DialogProfesor
             open={openDialog}
             onClose={handleCloseDialog}
             actualizar={actualizar}
             id={profesorId}
-      />*/}
-        </div>
+            openAlert={openAlert}
+          />
+        </>
       ) : (
         <Cargando texto="Cargando profesores." />
       )}
-    </>
+    </div>
   );
 }

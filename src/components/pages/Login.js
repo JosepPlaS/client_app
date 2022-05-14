@@ -4,11 +4,8 @@ import LoginIcon from "@mui/icons-material/Login";
 import TextFieldCustom from "../atoms/TextFieldCustom";
 import ButtonCustom from "../atoms/ButtonCustom";
 import logo from "../img/logo.png";
-import AlertCustom from "../atoms/AlertCustom";
-import { useNavigate } from "react-router-dom";
 
 export default function Login({ openAlert }) {
-  const navigate = useNavigate();
   const [usuario, setUsuario] = useState("");
   const [contrasena, setContrasena] = useState("");
 

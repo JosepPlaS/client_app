@@ -46,3 +46,15 @@
     display: flex;
     flex-direction: column;
 }
+
+.dialog--twoColumn--row{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dialog--twoColumn--row > *{
+    margin-left: 15px;
+    margin-right: 15px;
+    width: 100%;
+}

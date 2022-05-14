@@ -6,9 +6,9 @@ import Titulo from "../atoms/Titulo";
 import { decoPermiso, deleteRol, getRoles } from "../../services/RolAPI";
 import BuscarAnadir, { filtrar } from "../atoms/BuscarAnadir";
 import Tabla from "../molecules/Tabla";
-import AlertCustom from "../atoms/AlertCustom";
 import Cargando from "../atoms/Cargando";
 import DialogRol from "../molecules/DialogRol";
+import TituloPagina from "../atoms/TituloPagina";
 
 export default function Roles({ openAlert }) {
   const { setGlobal } = useContext(AppContext);
@@ -57,8 +57,10 @@ export default function Roles({ openAlert }) {
           default:
             tmp += decoPermiso(permiso.codigo) + ", ";
         }
+        return undefined;
       });
       rol.descPermisos = tmp;
+      return undefined;
     });
     return tmpRoles;
   }
@@ -115,19 +117,31 @@ export default function Roles({ openAlert }) {
   }
 
   function btEliminar(id) {
-    deleteRol(id).then((response) => {
-      if (response.status === 200) {
-        actualizar();
-      } else {
-        openAlert("No se ha podido eliminar el rol.", "error");
-      }
-    });
+    deleteRol(id)
+      .then((response) => {
+        if (response.status === 200) {
+          actualizar();
+        } else {
+          return response.json();
+        }
+      })
+      .then((json) => {
+        if (json) {
+          json.message
+            ? openAlert(json.message, "error")
+            : openAlert("No se ha podido eliminar el rol.", "error");
+        }
+      });
   }
 
   return (
-    <>
+    <div className="pagina">
+      <TituloPagina
+        icon={<LockIcon fontSize="large" />}
+        text={"Lista de roles:"}
+      />
       {roles ? (
-        <div className="pagina">
+        <>
           <BuscarAnadir
             filtro={setFiltro}
             crear={btCrear}
@@ -142,18 +156,19 @@ export default function Roles({ openAlert }) {
             editar={(id) => btEditar(id)}
             eliminar={(id) => btEliminar(id)}
             perm={permiso}
-            rol={false}
+            rol={true}
           />
           <DialogRol
             open={openDialog}
             onClose={handleCloseDialog}
             actualizar={actualizar}
             id={rolId}
+            openAlert={openAlert}
           />
-        </div>
+        </>
       ) : (
         <Cargando texto="Cargando roles." />
       )}
-    </>
+    </div>
   );
 }

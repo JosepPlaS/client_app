@@ -10,9 +10,8 @@ import {
   deleteTipoHardware,
   getTiposHardware,
 } from "../../services/TipoHardwareAPI";
-import AlertCustom from "../atoms/AlertCustom";
 import DialogTipoHardware from "../molecules/DialogTipoHardware";
-
+import TituloPagina from "../atoms/TituloPagina";
 export default function TiposHardware({ openAlert }) {
   const { setGlobal } = useContext(AppContext);
 
@@ -97,9 +96,13 @@ export default function TiposHardware({ openAlert }) {
   }
 
   return (
-    <>
+    <div className="pagina">
+      <TituloPagina
+        icon={<KeyboardAltIcon fontSize="large" />}
+        text={"Lista de tipos de hardware:"}
+      />
       {tipos_hardware ? (
-        <div className="pagina">
+        <>
           <BuscarAnadir
             filtro={setFiltro}
             crear={btCrear}
@@ -120,11 +123,12 @@ export default function TiposHardware({ openAlert }) {
             onClose={handleCloseDialog}
             actualizar={actualizar}
             id={tipoHwId}
+            openAlert={openAlert}
           />
-        </div>
+        </>
       ) : (
         <Cargando texto="Cargando tipos de hardware." />
       )}
-    </>
+    </div>
   );
 }

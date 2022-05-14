@@ -59,7 +59,7 @@ export default function App() {
   const [alertText, setAlertText] = useState("");
   const [alertType, setAlertType] = useState("success");
 
-  function openAlert(text, type) {
+  const openAlert = (text, type) => {
     if (alert) {
       setAlert(true);
     } else {
@@ -68,7 +68,7 @@ export default function App() {
     }
     setAlertText(text);
     setAlertType(type);
-  }
+  };
 
   return (
     <ThemeProvider theme={theme}>

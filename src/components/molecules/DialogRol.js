@@ -9,14 +9,28 @@ import TextFieldCustom from "../atoms/TextFieldCustom";
 import ButtonCustom from "../atoms/ButtonCustom";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import AlertCustom from "../atoms/AlertCustom";
 
 import "./Dialog.css";
-import AlertCustom from "../atoms/AlertCustom";
-import Roles from "../pages/Roles";
 
 export default function DialogRol({ open, onClose, actualizar, id }) {
   const [permisos, setPermisos] = useState();
   const [permisosUsuario, setPermisosUsuario] = useState();
+
+  const [alert, setAlert] = useState(false);
+  const [alertText, setAlertText] = useState("");
+  const [alertType, setAlertType] = useState("success");
+
+  const openAlert = (text, type) => {
+    if (alert) {
+      setAlert(true);
+    } else {
+      setAlert(false);
+      setAlert(true);
+    }
+    setAlertText(text);
+    setAlertType(type);
+  };
 
   const schema = yup
     .object({
@@ -70,6 +84,7 @@ export default function DialogRol({ open, onClose, actualizar, id }) {
         default:
           tmp.error = perm;
       }
+      return undefined;
     });
     return tmp;
   }
@@ -118,15 +133,15 @@ export default function DialogRol({ open, onClose, actualizar, id }) {
   }
 
   useEffect(() => {
+    getPermisos()
+      .then((response) => response.json())
+      .then((json) => setPermisos(convertPermisos(json)));
     if (id) {
       getRol(id)
         .then((response) => response.json())
         .then((json) => {
           reset(formatRol(json));
         });
-      getPermisos()
-        .then((response) => response.json())
-        .then((json) => setPermisos(convertPermisos(json)));
     } else {
       reset({ nombre: "" });
     }
@@ -139,6 +154,8 @@ export default function DialogRol({ open, onClose, actualizar, id }) {
       permisos: [],
     };
 
+    console.log(permisos);
+
     data.adin && newRol.permisos.push(permisos.adin);
     data.alro && newRol.permisos.push(permisos.alro);
     data.alth && newRol.permisos.push(permisos.alth);
@@ -146,33 +163,22 @@ export default function DialogRol({ open, onClose, actualizar, id }) {
     data.info && newRol.permisos.push(permisos.info);
     data.moin && newRol.permisos.push(permisos.moin);
 
-    (!id ? postRol(newRol) : putRol(id, newRol)).then((response) => {
-      if (response.status === 200) {
-        actualizar();
-        onClose();
-      } else {
-        openAlert(
-          "No se ha podido " + (id ? "modificar" : "introducir") + " el rol.",
-          "error"
-        );
-      }
-    });
+    (!id ? postRol(newRol) : putRol(id, newRol))
+      .then((response) => {
+        if (response.status === 200) {
+          actualizar();
+          onClose();
+        } else if (response.status === 402) {
+          return response.json();
+        } else {
+          openAlert(
+            "No se ha podido " + (id ? "modificar" : "introducir") + " el rol.",
+            "error"
+          );
+        }
+      })
+      .then((json) => json && openAlert(json.message, "error"));
   };
-
-  const [alert, setAlert] = useState(false);
-  const [alertText, setAlertText] = useState("");
-  const [alertType, setAlertType] = useState("success");
-
-  function openAlert(text, type) {
-    if (alert) {
-      setAlert(true);
-    } else {
-      setAlert(false);
-      setAlert(true);
-    }
-    setAlertText(text);
-    setAlertType(type);
-  }
 
   return (
     <>
@@ -305,7 +311,6 @@ export default function DialogRol({ open, onClose, actualizar, id }) {
           </div>
         </form>
       </Dialog>
-
       <AlertCustom
         open={alert}
         setOpen={setAlert}

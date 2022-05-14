@@ -12,17 +12,26 @@ import TextFieldCustom from "../atoms/TextFieldCustom";
 import ButtonCustom from "../atoms/ButtonCustom";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-
-import "./Dialog.css";
 import AlertCustom from "../atoms/AlertCustom";
 
-export default function DialogDepartamento({
-  open,
-  onClose,
-  openAlert,
-  actualizar,
-  id,
-}) {
+import "./Dialog.css";
+
+export default function DialogDepartamento({ open, onClose, actualizar, id }) {
+  const [alert, setAlert] = useState(false);
+  const [alertText, setAlertText] = useState("");
+  const [alertType, setAlertType] = useState("success");
+
+  const openAlert = (text, type) => {
+    if (alert) {
+      setAlert(true);
+    } else {
+      setAlert(false);
+      setAlert(true);
+    }
+    setAlertText(text);
+    setAlertType(type);
+  };
+
   const schema = yup
     .object({
       codigo: yup.string().required("Introduce un codigo."),
@@ -152,6 +161,12 @@ export default function DialogDepartamento({
           </div>
         </form>
       </Dialog>
+      <AlertCustom
+        open={alert}
+        setOpen={setAlert}
+        severity={alertType}
+        text={alertText}
+      />
     </>
   );
 }

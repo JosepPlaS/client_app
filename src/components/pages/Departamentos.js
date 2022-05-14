@@ -10,11 +10,12 @@ import {
   deleteDepartamento,
   getDepartamentos,
 } from "../../services/DepartamentoAPI";
-import AlertCustom from "../atoms/AlertCustom";
 import DialogDepartamento from "../molecules/DialogDepartamento";
+import TituloPagina from "../atoms/TituloPagina";
 
 export default function Departamentos({ openAlert }) {
   const { setGlobal } = useContext(AppContext);
+  const [permiso, setPermiso] = useState(0);
 
   const [update, setUpdate] = useState(false);
 
@@ -24,6 +25,15 @@ export default function Departamentos({ openAlert }) {
   const [filtro, setFiltro] = useState();
 
   const [departamentoId, setDepartamentoId] = useState();
+
+  function comprobarPermisos() {
+    let user = JSON.parse(sessionStorage.getItem("incidenciasUser"));
+    if (user) {
+      user.rol.nombre === "Administrador" ? setPermiso(2) : setPermiso(0);
+    } else {
+      window.location.replace("");
+    }
+  }
 
   useEffect(() => {
     setGlobal((old) => ({
@@ -35,6 +45,8 @@ export default function Departamentos({ openAlert }) {
         />
       ),
     }));
+
+    comprobarPermisos();
 
     getDepartamentos()
       .then((response) => response.json())
@@ -62,23 +74,36 @@ export default function Departamentos({ openAlert }) {
   }
 
   function btEliminar(id) {
-    deleteDepartamento(id).then((response) => {
-      if (response.status === 200) {
-        actualizar();
-      } else {
-        openAlert("No se ha podido eliminar el departamento.", "error");
-      }
-    });
+    deleteDepartamento(id)
+      .then((response) => {
+        if (response.status === 200) {
+          actualizar();
+        } else {
+          return response.json();
+        }
+      })
+      .then((json) => {
+        if (json) {
+          json.message
+            ? openAlert(json.message, "error")
+            : openAlert("No se ha podido eliminar el departamento.", "error");
+        }
+      });
   }
 
   return (
-    <>
+    <div className="pagina">
+      <TituloPagina
+        icon={<MeetingRoomIcon fontSize="large" />}
+        text={"Lista de departamentos:"}
+      />
       {departamentos ? (
-        <div className="pagina">
+        <>
           <BuscarAnadir
             filtro={setFiltro}
             crear={btCrear}
             actualizar={actualizar}
+            disableCrear={permiso < 1}
           />
           <Tabla
             idLabel={"id"}
@@ -87,7 +112,7 @@ export default function Departamentos({ openAlert }) {
             datos={filtrar(departamentos, filtro)}
             editar={(id) => btEditar(id)}
             eliminar={(id) => btEliminar(id)}
-            perm={2}
+            perm={permiso}
           />
           <DialogDepartamento
             open={openDialog}
@@ -96,10 +121,10 @@ export default function Departamentos({ openAlert }) {
             id={departamentoId}
             openAlert={openAlert}
           />
-        </div>
+        </>
       ) : (
         <Cargando texto="Cargando departamentos." />
       )}
-    </>
+    </div>
   );
 }
