@@ -122,12 +122,12 @@
     box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
     border-radius: 0px 0px 5px 0px;
     font-family: 'Koulen';
-    font-size: large;
+    font-size: x-large;
 }
 
 .tituloPagina--text{
     margin-left: 10px;
-    margin-bottom: -13px;
+    margin-bottom: -12px;
 }
 
 
