@@ -19,8 +19,8 @@ export default function Departamentos({ openAlert }) {
 
   const [update, setUpdate] = useState(false);
 
-  const titulos = ["Código: ", "Nombre: ", "Descripcion:"];
-  const columnas = ["codigo", "nombre", "descripcion"];
+  const titulos = ["Código: ", "Nombre: ", "Localización:"];
+  const columnas = ["codigo", "nombre", "localizacion"];
   const [departamentos, setDepartamentos] = useState();
   const [filtro, setFiltro] = useState();
 

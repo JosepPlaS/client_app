@@ -25,19 +25,19 @@ export default function Tabla({
 
   return (
     <>
-      {data && data.length > 0 ? (
-        <div className="table-wrapper">
-          <table className="fl-table">
-            <thead>
-              <tr>
-                {titulos.map((titulo, index) => (
-                  <th key={"th" + index}>{titulo}</th>
-                ))}
-                {perm >= 2 && <th className="editar_eliminar">Opciones:</th>}
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((dato, index) => (
+      <div className="table-wrapper">
+        <table className="fl-table">
+          <thead>
+            <tr>
+              {titulos.map((titulo, index) => (
+                <th key={"th" + index}>{titulo}</th>
+              ))}
+              {perm >= 2 && <th className="editar_eliminar">Opciones:</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {data && data.length > 0 ? (
+              data.map((dato, index) => (
                 <tr key={"tr" + index}>
                   {columnas.map((columna, index) => (
                     <td key={"td" + index}>{dato[columna]}</td>
@@ -59,13 +59,20 @@ export default function Tabla({
                     </td>
                   )}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <div className="sin_datos">No existen datos.</div>
-      )}
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan={perm >= 2 ? titulos.length + 1 : titulos.length}
+                  className="table--sinDatos"
+                >
+                  <div>No existen datos.</div>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

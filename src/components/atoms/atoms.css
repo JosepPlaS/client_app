@@ -79,6 +79,7 @@
 
 .texFieldCustom{
     min-height: 90px;
+    min-width: 210px;
 }
 
 .texFieldCustom--error{
@@ -103,6 +104,7 @@
     justify-content: center;
     font-family: 'Koulen';
     font-size: large;
+    user-select: none; 
 }
 
 .bigButton--container:hover{
@@ -110,6 +112,25 @@
     color: white;
     cursor: pointer;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 7px 15px -12px inset, rgba(0, 0, 0, 0.3) 0px 8px 16px -9px inset;
+}
+
+.bigButton--container--disabled{
+    background-color: rgb(177, 177, 177);
+    height: 100px;
+    width:200px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Koulen';
+    font-size: large;
+    user-select: none;     
+}
+
+.bigButton--container--disabled:hover{
+    background-color: rgb(153, 153, 153);
 }
 
 .tituloPagina--container{
@@ -128,6 +149,10 @@
 .tituloPagina--text{
     margin-left: 10px;
     margin-bottom: -12px;
+}
+
+.textFieldCustom--fullSize{
+    width: 100%;
 }
 
 

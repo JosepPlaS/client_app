@@ -24,6 +24,7 @@ export default function SelectorCustom({
         onChange={onChange}
         renderInput={(params) => <TextField {...params} label={label} />}
         onClear
+        isOptionEqualToValue={(option, value) => option.id === value.id}
       />
       {errors && <div className="texFieldCustom--error">{errors}</div>}
     </div>

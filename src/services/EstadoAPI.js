@@ -1,49 +1,49 @@
-export function getProfesores() {
+export function getEstados() {
   const request = {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   };
-  return fetch("/api/profesor/get/all", request);
+  return fetch("/api/estado/get/all", request);
 }
 
-export function getProfesor(id) {
+export function getEstado(id) {
   const request = {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   };
-  return fetch("/api/profesor/get/" + id, request);
+  return fetch("/api/estado/get/" + id, request);
 }
 
-export function getProfesorDto(id) {
+export function getEstadoByCodigo(codigo) {
   const request = {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   };
-  return fetch("/api/profesor/get_dto/" + id, request);
+  return fetch("/api/estado/get/c-" + codigo, request);
 }
 
-export function postProfesor(datos) {
+export function postEstado(datos) {
   const request = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(datos),
   };
-  return fetch("/api/profesor/insert", request);
+  return fetch("/api/estado/insert", request);
 }
 
-export function putProfesor(id, datos) {
+export function putEstado(id, datos) {
   const request = {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(datos),
   };
-  return fetch("/api/profesor/update/" + id, request);
+  return fetch("/api/estado/update/" + id, request);
 }
 
-export function deleteProfesor(id) {
+export function deleteEstado(id) {
   const request = {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
   };
-  return fetch("/api/profesor/delete/" + id, request);
+  return fetch("/api/estado/delete/" + id, request);
 }

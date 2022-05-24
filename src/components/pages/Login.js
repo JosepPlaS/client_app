@@ -51,7 +51,7 @@ export default function Login({ openAlert }) {
             color="grey"
             value={contrasena}
             onChange={(evnt) => setContrasena(evnt.target.value)}
-            password={true}
+            type={"password"}
           />
         </div>
         <div className="loginBotones">

@@ -4,13 +4,15 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/templates/Navbar";
 import Inicio from "./components/pages/Inicio";
 import Departamentos from "./components/pages/Departamentos";
-import Incidencias from "./components/pages/Incidencias";
+import MenuIncidencias from "./components/pages/MenuIncidencias";
 import Roles from "./components/pages/Roles";
 import TiposHardware from "./components/pages/TiposHardware";
 import Login from "./components/pages/Login";
 import { useState, useEffect } from "react";
 import Profesores from "./components/pages/Profesores";
 import AlertCustom from "./components/atoms/AlertCustom";
+import Incidencias from "./components/pages/Incidencias";
+import FormIncidencia from "./components/pages/FormIncidencia";
 
 const theme = createTheme({
   palette: {
@@ -78,8 +80,13 @@ export default function App() {
             <Route path="" element={<Inicio />} />
             <Route
               path="/incidencias"
+              element={<MenuIncidencias openAlert={openAlert} />}
+            />
+            <Route
+              path="/incidencias/todas"
               element={<Incidencias openAlert={openAlert} />}
             />
+            <Route path="/incidencia/:id" element={<FormIncidencia />} />
             <Route
               path="/profesores"
               element={<Profesores openAlert={openAlert} />}

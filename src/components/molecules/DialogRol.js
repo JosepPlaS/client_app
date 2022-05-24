@@ -154,8 +154,6 @@ export default function DialogRol({ open, onClose, actualizar, id }) {
       permisos: [],
     };
 
-    console.log(permisos);
-
     data.adin && newRol.permisos.push(permisos.adin);
     data.alro && newRol.permisos.push(permisos.alro);
     data.alth && newRol.permisos.push(permisos.alth);

@@ -8,7 +8,6 @@ body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
   color: #494949;
-  
 }
 
 /* SCROLLBAR CSS */
@@ -43,6 +42,7 @@ body {
   padding-top: 65px;
   max-width: 1000px;
   min-height: 100%;
+  overflow: auto;
 }
 
 .login{
@@ -107,4 +107,16 @@ body {
 
 .bigButtons--container > *{
   margin:10px
+}
+
+.sin_datos{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background-color: rgb(255, 255, 255, 0.8);
+  height: 50px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 10px 20px rgba( 0, 0, 0, 0.2 );
 }

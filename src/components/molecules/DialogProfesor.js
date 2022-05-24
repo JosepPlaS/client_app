@@ -91,11 +91,13 @@ export default function DialogProfesor({ open, onClose, actualizar, id }) {
 
   useEffect(() => {
     !departamentos &&
+      open &&
       getDepartamentos()
         .then((response) => response.json())
         .then((json) => json && setDepartamentos(json));
 
     !roles &&
+      open &&
       getRoles()
         .then((response) => response.json())
         .then((json) => json && setRoles(json));
@@ -226,7 +228,7 @@ export default function DialogProfesor({ open, onClose, actualizar, id }) {
                     label={"Contraseña: "}
                     value={value}
                     onChange={onChange}
-                    password={true}
+                    type="password"
                     errors={errors.contrasena?.message}
                   />
                 )}

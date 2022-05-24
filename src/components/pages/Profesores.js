@@ -42,15 +42,14 @@ export default function Profesores({ openAlert }) {
   function formatProfesor(profesores) {
     let newProfesores = [];
     profesores.map((profesor, index) => {
-      if (profesor.email !== "root") {
-        profesor.nombreCompleto =
-          profesor.nombre + " " + profesor.apellido1 + " " + profesor.apellido2;
-        profesor.departamentoNombre =
-          (profesor.departamento && profesor.departamento.nombre) ||
-          "No seleccionado";
-        profesor.rolNombre = profesor.rol.nombre;
-        newProfesores.push(profesor);
-      }
+      profesor.nombreCompleto =
+        profesor.nombre + " " + profesor.apellido1 + " " + profesor.apellido2;
+      profesor.departamentoNombre =
+        (profesor.departamento && profesor.departamento.nombre) ||
+        "No seleccionado";
+      profesor.rolNombre = profesor.rol.nombre;
+      newProfesores.push(profesor);
+
       return undefined;
     });
     return newProfesores;

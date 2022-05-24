@@ -32,6 +32,8 @@
     bottom: 0;
     height: 100%;
     width: 100%;
+    overflow: auto;
+
 }
 
 @media screen and (min-aspect-ratio: 4/3){
@@ -43,7 +45,7 @@
         box-shadow: rgba(229, 27, 35, 0.3) -2px 2px, rgba(229, 27, 35, 0.2) -4px 4px, rgba(229, 27, 35, 0.05) -6px 6px;
         border-radius: 0px 0px 0px 15px;
         padding: 15px;
-        position: absolute;
+        position: fixed;
         right: 0;
         top:0;
         margin-top: 63px;
@@ -61,7 +63,7 @@
         box-shadow: rgba(229, 27, 35, 0.3) -2px 2px, rgba(229, 27, 35, 0.2) -4px 4px, rgba(229, 27, 35, 0.05) -6px 6px;
         border-radius: 15px 0px 0px 0px;
         padding: 15px;
-        position: absolute;
+        position: fixed;
         right: 0;
         bottom:0;
         font-size: large;
@@ -78,11 +80,12 @@
         box-shadow: rgba(229, 27, 35, 0.3) -2px 2px, rgba(229, 27, 35, 0.2) -4px 4px, rgba(229, 27, 35, 0.05) -6px 6px;
         border-radius: 15px 0px 0px 0px;
         padding: 15px;
-        position: absolute;
+        position: fixed;
         right: 0;
         bottom:0;
         font-size: large;
         color: white;
+        
     }
   }
 

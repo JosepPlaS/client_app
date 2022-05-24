@@ -1,22 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {
-  getDepartamento,
-  postDepartamento,
-  putDepartamento,
-} from "../../services/DepartamentoAPI";
 import { Dialog } from "@mui/material";
 import TextFieldCustom from "../atoms/TextFieldCustom";
 import ButtonCustom from "../atoms/ButtonCustom";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import AlertCustom from "../atoms/AlertCustom";
+import moment from "moment";
 
 import "./Dialog.css";
+import { putIncidencia } from "../../services/IncidenciaAPI";
 
-export default function DialogDepartamento({ open, onClose, actualizar, id }) {
+export default function DialogIncidencia({
+  open,
+  onClose,
+  actualizar,
+  id,
+  incidencia,
+}) {
   const [alert, setAlert] = useState(false);
   const [alertText, setAlertText] = useState("");
   const [alertType, setAlertType] = useState("success");
@@ -34,9 +37,9 @@ export default function DialogDepartamento({ open, onClose, actualizar, id }) {
 
   const schema = yup
     .object({
-      codigo: yup.string().required("Introduce un codigo."),
-      nombre: yup.string().required("Introduce un nombre."),
-      localizacion: yup.string(),
+      observaciones: yup
+        .string()
+        .max(250, "No puede contener mas de 250 caracteres."),
     })
     .required();
 
@@ -49,25 +52,29 @@ export default function DialogDepartamento({ open, onClose, actualizar, id }) {
     mode: "onChange",
     reValidateMode: "onChange",
     defaultValues: {
-      codigo: "",
-      nombre: "",
-      localizacion: "",
+      observaciones: "",
     },
     resolver: yupResolver(schema),
   });
 
   useEffect(() => {
-    if (id) {
-      getDepartamento(id)
-        .then((response) => response.json())
-        .then((json) => reset(json));
-    } else {
-      reset({ codigo: "", nombre: "", localizacion: "" });
+    if (id && open) {
+      if (incidencia) {
+        reset(incidencia);
+      }
     }
-  }, [id, reset, onClose]);
+  }, [id, onClose, open]);
 
-  const onSubmit = (data) => {
-    (!id ? postDepartamento(data) : putDepartamento(id, data))
+  const onSubmit = async (data) => {
+    const user = JSON.parse(sessionStorage.getItem("incidenciasUser"));
+    let tmp = data;
+    tmp.historial +=
+      "{UwU}" +
+      moment(Date.now()).format("DD-MM-YY") +
+      " Observaciones modificadas por: " +
+      user.email;
+
+    putIncidencia(id, tmp)
       .then((response) => {
         if (response.status === 200) {
           actualizar();
@@ -75,12 +82,7 @@ export default function DialogDepartamento({ open, onClose, actualizar, id }) {
         } else if (response.status === 402) {
           return response.json();
         } else {
-          openAlert(
-            "No se ha podido " +
-              (id ? "modificar" : "introducir") +
-              " el departamento.",
-            "error"
-          );
+          openAlert("No se ha podido modificar la incidencia.", "error");
         }
       })
       .then((json) => json && openAlert(json.message, "error"));
@@ -92,48 +94,25 @@ export default function DialogDepartamento({ open, onClose, actualizar, id }) {
         <form className="dialog">
           <div className="dialog--oneColumn">
             <div className="dialog--oneColumn--title">
-              <h3>{!id ? "Crear " : "Modificar "}departamento:</h3>
+              <h3>{id ? "Modificar" : "Crear"} incidencia:</h3>
             </div>
-            <Controller
-              name="codigo"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <TextFieldCustom
-                  color={"text"}
-                  label={"Codigo: "}
-                  value={value}
-                  onChange={onChange}
-                  errors={errors.codigo?.message}
-                />
-              )}
-            />
-            <Controller
-              name="nombre"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <TextFieldCustom
-                  color={"text"}
-                  label={"Nombre: "}
-                  value={value}
-                  onChange={onChange}
-                  errors={errors.nombre?.message}
-                />
-              )}
-            />
-            <Controller
-              name="localizacion"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <TextFieldCustom
-                  color={"text"}
-                  label={"Localizacion: "}
-                  value={value}
-                  onChange={onChange}
-                  multiLine={true}
-                  errors={errors.localizacion?.message}
-                />
-              )}
-            />
+            <div className="dialog--oneColumn--fullSize--row">
+              <Controller
+                name="observaciones"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextFieldCustom
+                    className="textFieldCustom--fullSize"
+                    color={"text"}
+                    label={"Observaciones: "}
+                    value={value}
+                    onChange={onChange}
+                    multiLine={true}
+                    errors={errors.observaciones?.message}
+                  />
+                )}
+              />
+            </div>
           </div>
           <div className="dialog--oneColumn--buttons--container">
             <div className="dialog--oneColumn--buttons">
