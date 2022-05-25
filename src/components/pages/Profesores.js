@@ -9,8 +9,10 @@ import Cargando from "../atoms/Cargando";
 import { deleteProfesor, getProfesores } from "../../services/ProfesorAPI";
 import DialogProfesor from "../molecules/DialogProfesor";
 import TituloPagina from "../atoms/TituloPagina";
+import { useNavigate } from "react-router-dom";
 
 export default function Profesores({ openAlert }) {
+  const navigate = useNavigate();
   const { setGlobal } = useContext(AppContext);
 
   const [permiso, setPermiso] = useState(0);
@@ -35,7 +37,8 @@ export default function Profesores({ openAlert }) {
     if (user) {
       user.rol.nombre === "Administrador" ? setPermiso(2) : setPermiso(0);
     } else {
-      window.location.replace("");
+      navigate("");
+      window.location.reload();
     }
   }
 

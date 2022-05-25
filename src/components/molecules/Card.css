@@ -3,9 +3,32 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255, 0.6);
+    box-shadow: 0px 10px 20px rgba( 0, 0, 0, 0.2 );
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .card--container > *{
+    margin: 5px 1px;
+}
+
+.card--container--scrolled{
+    margin: 10px 70px 70px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255, 0.6);
+    box-shadow: 0px 10px 20px rgba( 0, 0, 0, 0.2 );
+    padding-top: 10px;
+    padding-bottom: 10px;
+    max-height: 450px;
+    overflow: auto;
+}
+
+.card--container--scrolled > *{
     margin: 5px 1px;
 }
 
@@ -49,6 +72,14 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.card--line--historial{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .card--label{
@@ -78,8 +109,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
     padding: 10px;
+    margin: 10px 70px 70px;
 }
 
 .card--detalle hr{

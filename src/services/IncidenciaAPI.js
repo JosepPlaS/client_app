@@ -8,6 +8,33 @@ export function getIncidencias() {
   return fetch("/api/incidencia/get/all", request);
 }
 
+export function getIncidenciasTipo(tipo_incidencia) {
+  const request = {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  };
+  return fetch(
+    "/api/incidencia/get/tipo_incidencia/" + tipo_incidencia,
+    request
+  );
+}
+
+export function getIncidenciasResponsable(id) {
+  const request = {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  };
+  return fetch("/api/incidencia/get/all/responsable/" + id, request);
+}
+
+export function getIncidenciasReportadas(id) {
+  const request = {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  };
+  return fetch("/api/incidencia/get/all/reportada/" + id, request);
+}
+
 export function getIncidencia(id) {
   const request = {
     method: "GET",
@@ -68,6 +95,15 @@ export function putUnsolved(id, datos) {
     body: JSON.stringify(datos),
   };
   return fetch("/api/incidencia/inviable/" + id, request);
+}
+
+export function putEstadoIncidencia(id, datos) {
+  const request = {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(datos),
+  };
+  return fetch("/api/incidencia/estado/" + id, request);
 }
 
 export function deleteIncidencia(id) {

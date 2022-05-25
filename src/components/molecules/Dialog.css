@@ -64,3 +64,8 @@
     margin-right: 15px;
     min-width: 450px;
 }
+
+.dialog--twoColumn--radiobutton{
+    display: flex;
+    flex-direction: column;
+}

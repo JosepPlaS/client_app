@@ -4,6 +4,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import TextFieldCustom from "../atoms/TextFieldCustom";
 import ButtonCustom from "../atoms/ButtonCustom";
 import logo from "../img/logo.png";
+import pack from "../../../package.json";
 
 export default function Login({ openAlert }) {
   const [usuario, setUsuario] = useState("");
@@ -25,7 +26,7 @@ export default function Login({ openAlert }) {
         if (json) {
           if (json.id) {
             sessionStorage.setItem("incidenciasUser", JSON.stringify(json));
-            window.location.replace("");
+            window.location.reload();
           } else {
             openAlert(json.message, "error");
           }
@@ -64,6 +65,7 @@ export default function Login({ openAlert }) {
           />
         </div>
       </div>
+      <div className="versionNumber">v.{pack.version}</div>
     </div>
   );
 }

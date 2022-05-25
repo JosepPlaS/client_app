@@ -94,7 +94,7 @@ export default function DialogIncidencia({
         <form className="dialog">
           <div className="dialog--oneColumn">
             <div className="dialog--oneColumn--title">
-              <h3>{id ? "Modificar" : "Crear"} incidencia:</h3>
+              <h3>Modificar observaciones:</h3>
             </div>
             <div className="dialog--oneColumn--fullSize--row">
               <Controller

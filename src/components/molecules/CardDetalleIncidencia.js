@@ -14,9 +14,15 @@ import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import moment from "moment";
 
+import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+
 import "./Card.css";
+import { useState } from "react";
+import { IconButton } from "@mui/material";
 
 export default function CardIncidenciaDetalle({ incidencia }) {
+  const [historial, setHistorial] = useState(false);
   function formatHistorial(historial) {
     let hList = historial.split("{UwU}");
 
@@ -202,7 +208,9 @@ export default function CardIncidenciaDetalle({ incidencia }) {
           <div>Tiempo invertido:</div>
         </div>
         <div className="card--data">
-          {incidencia.tiempo_invertido || "No especificado"}
+          {incidencia.tiempo_invertido !== null
+            ? incidencia.tiempo_invertido + " horas"
+            : "No especificado"}
         </div>
       </div>
       <div className="card--line">
@@ -226,8 +234,17 @@ export default function CardIncidenciaDetalle({ incidencia }) {
           <CalendarMonthIcon fontSize="small" />
           <div>Historial:</div>
         </div>
+        <div>
+          <IconButton onClick={() => setHistorial((old) => !old)}>
+            {!historial ? (
+              <RemoveRedEyeOutlinedIcon fontSize="small" />
+            ) : (
+              <VisibilityOffOutlinedIcon fontSize="small" />
+            )}
+          </IconButton>
+        </div>
       </div>
-      <div>{formatHistorial(incidencia.historial)}</div>
+      {historial && <div>{formatHistorial(incidencia.historial)}</div>}
     </div>
   );
 }

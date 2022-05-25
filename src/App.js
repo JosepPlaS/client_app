@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import Profesores from "./components/pages/Profesores";
 import AlertCustom from "./components/atoms/AlertCustom";
 import Incidencias from "./components/pages/Incidencias";
+import IncidenciasUser from "./components/pages/IncidenciasUser";
 import FormIncidencia from "./components/pages/FormIncidencia";
 
 const theme = createTheme({
@@ -83,8 +84,12 @@ export default function App() {
               element={<MenuIncidencias openAlert={openAlert} />}
             />
             <Route
-              path="/incidencias/todas"
+              path="/incidencias/:tipo_incidencia"
               element={<Incidencias openAlert={openAlert} />}
+            />
+            <Route
+              path="/incidencias/propias"
+              element={<IncidenciasUser openAlert={openAlert} />}
             />
             <Route path="/incidencia/:id" element={<FormIncidencia />} />
             <Route
@@ -100,6 +105,7 @@ export default function App() {
               element={<TiposHardware openAlert={openAlert} />}
             />
             <Route path="/roles" element={<Roles openAlert={openAlert} />} />
+            <Route path="*" element={<Inicio />} />
           </Routes>
         </Navbar>
       ) : (

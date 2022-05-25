@@ -8,9 +8,11 @@ import BuscarAnadir, { filtrar } from "../atoms/BuscarAnadir";
 import Tabla from "../molecules/Tabla";
 import Cargando from "../atoms/Cargando";
 import DialogRol from "../molecules/DialogRol";
+import { useNavigate } from "react-router-dom";
 import TituloPagina from "../atoms/TituloPagina";
 
 export default function Roles({ openAlert }) {
+  const navigate = useNavigate();
   const { setGlobal } = useContext(AppContext);
   const [permiso, setPermiso] = useState(0);
 
@@ -28,7 +30,8 @@ export default function Roles({ openAlert }) {
     if (user) {
       user.rol.permisos.map((perm) => perm.codigo === "ALRO" && setPermiso(2));
     } else {
-      window.location.replace("");
+      navigate("");
+      window.location.reload();
     }
   }
 

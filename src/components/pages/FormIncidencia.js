@@ -21,6 +21,7 @@ import DialogObservaciones from "../molecules/DialogObservaciones";
 import {
   formatIncidencia,
   getIncidencia,
+  putEstadoIncidencia,
   putResponsable,
   putWorkingOn,
 } from "../../services/IncidenciaAPI";
@@ -35,6 +36,7 @@ import moment from "moment";
 export default function FormIncidencia({ openAlert }) {
   const { setGlobal } = useContext(AppContext);
   const params = useParams();
+
   const [update, setUpdate] = useState(false);
 
   const navigate = useNavigate();
@@ -113,7 +115,8 @@ export default function FormIncidencia({ openAlert }) {
           : undefined
       );
     } else {
-      window.location.replace("");
+      navigate("");
+      window.location.reload();
     }
   }
 
@@ -155,7 +158,28 @@ export default function FormIncidencia({ openAlert }) {
       .then((json) => json && console.log(json.message));
   }
 
-  function cambiarEstado() {}
+  function cambiarEstado(estado) {
+    setIncidencia((old) => {
+      const user = JSON.parse(sessionStorage.getItem("incidenciasUser"));
+      let tmp = old;
+      tmp.estado = estado;
+      tmp.historial +=
+        "{UwU}" +
+        moment(Date.now()).format("DD-MM-YY") +
+        " Estado cambiado por: " +
+        user.email;
+      return tmp;
+    });
+    putEstadoIncidencia(params.id, incidencia)
+      .then((response) => {
+        if (response.status === 200) {
+          actualizar();
+        } else {
+          return response.json();
+        }
+      })
+      .then((json) => json && console.log(json.message));
+  }
 
   function workingOn() {
     setIncidencia((old) => {
@@ -189,9 +213,7 @@ export default function FormIncidencia({ openAlert }) {
             text={"Datos de la incidencia:"}
           />
           {incidencia ? (
-            <div className="card--container">
-              <CardIncidenciaDetalle incidencia={incidencia} />
-            </div>
+            <CardIncidenciaDetalle incidencia={incidencia} />
           ) : (
             <Cargando />
           )}
@@ -220,10 +242,11 @@ export default function FormIncidencia({ openAlert }) {
                 text={"Finalizar"}
                 onClick={() => setOpenDialogEnd(true)}
                 disabled={
-                  permiso < 2 &&
-                  (incidencia.responsable
-                    ? userActual.dni !== incidencia.responsable.dni
-                    : true)
+                  (permiso < 2 &&
+                    (incidencia.responsable
+                      ? userActual.dni !== incidencia.responsable.dni
+                      : true)) ||
+                  incidencia.estado.codigo === "Solucionada"
                 }
               />
             )}
@@ -243,7 +266,8 @@ export default function FormIncidencia({ openAlert }) {
               icon={<ReceiptIcon fontSize="large" />}
               text={"generar justificante"}
               onClick={() => navigate("internet")}
-              disabled={permiso < 1}
+              //disabled={permiso < 1}
+              disabled={true}
             />
           </div>
           <TituloPagina
@@ -303,7 +327,7 @@ export default function FormIncidencia({ openAlert }) {
             open={openDialogSelEst}
             onClose={handleCloseDialogSelEst}
             actualizar={cambiarEstado}
-            responsableActual={incidencia.estado}
+            estadoActual={incidencia.estado}
           />
         </>
       ) : (

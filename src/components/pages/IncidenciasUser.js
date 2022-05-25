@@ -8,7 +8,8 @@ import Cargando from "../atoms/Cargando";
 import {
   deleteIncidencia,
   formatIncidencias,
-  getIncidenciasTipo,
+  getIncidenciasReportadas,
+  getIncidenciasResponsable,
 } from "../../services/IncidenciaAPI";
 import TituloPagina from "../atoms/TituloPagina";
 import CardIncidencia from "../molecules/CardIncidencia";
@@ -23,7 +24,8 @@ export default function Incidencias({ openAlert }) {
   const [permiso, setPermiso] = useState(0);
   const [update, setUpdate] = useState(false);
 
-  const [incidencias, setIncidencias] = useState();
+  const [incidenciasResponsable, setIncidenciasResponsable] = useState();
+  const [incidenciasReportadas, setIncidenciasReportadas] = useState();
   const [filtro, setFiltro] = useState();
 
   const [userActual, setUserActual] = useState();
@@ -46,6 +48,7 @@ export default function Incidencias({ openAlert }) {
   }
 
   useEffect(() => {
+    let user = JSON.parse(sessionStorage.getItem("incidenciasUser"));
     setGlobal((old) => ({
       ...old,
       pageTitle: (
@@ -55,16 +58,27 @@ export default function Incidencias({ openAlert }) {
         />
       ),
     }));
+    comprobarPermisos();
 
-    getIncidenciasTipo(params.tipo_incidencia)
+    getIncidenciasResponsable(user.id)
       .then((response) => response.json())
       .then(
         (json) =>
           json &&
-          setIncidencias(formatIncidencias(json.sort((a, b) => b.id - a.id)))
+          setIncidenciasResponsable(
+            formatIncidencias(json.sort((a, b) => b.id - a.id))
+          )
       );
 
-    comprobarPermisos();
+    getIncidenciasReportadas(user.id)
+      .then((response) => response.json())
+      .then(
+        (json) =>
+          json &&
+          setIncidenciasReportadas(
+            formatIncidencias(json.sort((a, b) => b.id - a.id))
+          )
+      );
   }, [setGlobal, update]);
 
   function actualizar() {
@@ -107,9 +121,9 @@ export default function Incidencias({ openAlert }) {
     <div className="pagina">
       <TituloPagina
         icon={<AssignmentIcon fontSize="large" />}
-        text={"Lista de incidencias:"}
+        text={"Lista de incidencias responsable:"}
       />
-      {incidencias ? (
+      {incidenciasResponsable ? (
         <>
           <BuscarAnadir
             filtro={setFiltro}
@@ -117,9 +131,9 @@ export default function Incidencias({ openAlert }) {
             actualizar={actualizar}
             disableCrear={permiso < 1}
           />
-          {filtrar(incidencias, filtro).length > 0 ? (
-            <div className="card--container">
-              {filtrar(incidencias, filtro).map((incidencia) => (
+          {filtrar(incidenciasResponsable, filtro).length > 0 ? (
+            <div className="card--container--scrolled">
+              {filtrar(incidenciasResponsable, filtro).map((incidencia) => (
                 <CardIncidencia
                   key={incidencia.id}
                   icon={<AssignmentIcon fontSize="small" />}
@@ -142,7 +156,47 @@ export default function Incidencias({ openAlert }) {
           />
         </>
       ) : (
-        <Cargando texto="Cargando incidencias." />
+        <Cargando texto="Cargando incidencias responsable." />
+      )}
+      <TituloPagina
+        icon={<AssignmentIcon fontSize="large" />}
+        text={"Lista de incidencias reportadas:"}
+      />
+      {incidenciasReportadas ? (
+        <>
+          <BuscarAnadir
+            filtro={setFiltro}
+            crear={btCrear}
+            actualizar={actualizar}
+            disableCrear={permiso < 1}
+          />
+          {filtrar(incidenciasReportadas, filtro).length > 0 ? (
+            <div className="card--container--scrolled">
+              {filtrar(incidenciasReportadas, filtro).map((incidencia) => (
+                <CardIncidencia
+                  key={incidencia.id}
+                  icon={<AssignmentIcon fontSize="small" />}
+                  incidencia={incidencia}
+                  editar={btEditar}
+                  eliminar={btEliminar}
+                  user={userActual && userActual.dni}
+                  disabled={permiso <= 1}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="sin_datos">No existen datos.</div>
+          )}
+
+          <DialogIncidencia
+            open={openDialog}
+            onClose={handleCloseDialog}
+            actualizar={actualizar}
+            openAlert={openAlert}
+          />
+        </>
+      ) : (
+        <Cargando texto="Cargando incidencias reportadas." />
       )}
     </div>
   );

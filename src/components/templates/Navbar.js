@@ -53,7 +53,8 @@ export default function Navbar({ children }) {
             <IconButton
               onClick={() => {
                 sessionStorage.removeItem("incidenciasUser");
-                window.location.replace("");
+                navigate("");
+                window.location.reload();
               }}
             >
               <LogoutIcon />

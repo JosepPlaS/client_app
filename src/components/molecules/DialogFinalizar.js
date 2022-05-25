@@ -11,11 +11,7 @@ import AlertCustom from "../atoms/AlertCustom";
 import moment from "moment";
 
 import "./Dialog.css";
-import {
-  putIncidencia,
-  putSolved,
-  putUnsolved,
-} from "../../services/IncidenciaAPI";
+import { putSolved, putUnsolved } from "../../services/IncidenciaAPI";
 
 export default function DialogIncidencia({
   open,
@@ -74,7 +70,6 @@ export default function DialogIncidencia({
       if (incidencia) {
         reset(incidencia);
         setValue("fecha_finalizacion", moment(Date.now()).format("YYYY-MM-DD"));
-        setValue("tiempo_invertido", 0);
         setEstado(0);
       }
     }
@@ -98,7 +93,7 @@ export default function DialogIncidencia({
           } else if (response.status === 402) {
             return response.json();
           } else {
-            openAlert("No se ha podido modificar la incidencia.", "error");
+            openAlert("No se ha podido finalizar la incidencia.", "error");
           }
         })
         .then((json) => json && openAlert(json.message, "error"));
@@ -111,7 +106,7 @@ export default function DialogIncidencia({
           } else if (response.status === 402) {
             return response.json();
           } else {
-            openAlert("No se ha podido modificar la incidencia.", "error");
+            openAlert("No se ha podido finalizar la incidencia.", "error");
           }
         })
         .then((json) => json && openAlert(json.message, "error"));
@@ -124,7 +119,7 @@ export default function DialogIncidencia({
         <form className="dialog">
           <div className="dialog--oneColumn">
             <div className="dialog--oneColumn--title">
-              <h3>{id ? "Modificar" : "Crear"} incidencia:</h3>
+              <h3>Finalizar incidencia:</h3>
             </div>
             <div className="dialog--oneColumn--fullSize--row">
               <Controller
@@ -152,16 +147,18 @@ export default function DialogIncidencia({
                   setEstado(option);
                 }}
               >
-                <FormControlLabel
-                  value={0}
-                  control={<Radio />}
-                  label="Solucionada"
-                />
-                <FormControlLabel
-                  value={1}
-                  control={<Radio />}
-                  label="Solución inviable"
-                />
+                <div className="dialog--twoColumn--radiobutton">
+                  <FormControlLabel
+                    value={0}
+                    control={<Radio />}
+                    label="Solucionada"
+                  />
+                  <FormControlLabel
+                    value={1}
+                    control={<Radio />}
+                    label="Solución inviable"
+                  />
+                </div>
               </RadioGroup>
               <Controller
                 name="tiempo_invertido"

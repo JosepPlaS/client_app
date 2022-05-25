@@ -12,7 +12,9 @@ import {
 } from "../../services/TipoHardwareAPI";
 import DialogTipoHardware from "../molecules/DialogTipoHardware";
 import TituloPagina from "../atoms/TituloPagina";
+import { useNavigate } from "react-router-dom";
 export default function TiposHardware({ openAlert }) {
+  const navigate = useNavigate();
   const { setGlobal } = useContext(AppContext);
 
   const [permiso, setPermiso] = useState(0);
@@ -30,7 +32,8 @@ export default function TiposHardware({ openAlert }) {
     if (user) {
       user.rol.permisos.map((perm) => perm.codigo === "ALTH" && setPermiso(2));
     } else {
-      window.location.replace("");
+      navigate("");
+      window.location.reload();
     }
   }
 

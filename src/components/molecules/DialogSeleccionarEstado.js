@@ -12,17 +12,17 @@ export default function DialogTipoHardware({
   open,
   onClose,
   actualizar,
-  responsableActual,
+  estadoActual,
 }) {
   const [estados, setEstados] = useState([]);
-  const [responsable, setResponsable] = useState(null);
+  const [estado, setEstado] = useState(null);
 
   useEffect(() => {
     open &&
       getEstados()
         .then((response) => response.json())
         .then((json) => json && setEstados(json));
-    setResponsable(responsableActual);
+    setEstado(estadoActual);
   }, [onClose, open]);
 
   return (
@@ -38,8 +38,8 @@ export default function DialogTipoHardware({
               optionLabel={(option) => option.codigo}
               color={"text"}
               label={"Estado: "}
-              value={responsable || null}
-              onChange={(event, option) => setResponsable(option)}
+              value={estado || null}
+              onChange={(event, option) => setEstado(option)}
             />
           </div>
           <div className="dialog--oneColumn--buttons--container">
@@ -48,8 +48,8 @@ export default function DialogTipoHardware({
                 label={"Aceptar"}
                 color={"success"}
                 onClick={() => {
-                  if (responsable) {
-                    actualizar(responsable);
+                  if (estado) {
+                    actualizar(estado);
                     onClose();
                   }
                 }}

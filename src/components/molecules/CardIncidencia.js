@@ -98,13 +98,7 @@ export default function CardIncidencia({
           icon={<DeleteOutlineOutlinedIcon fontSize="small" />}
           label="Eliminar"
           onClick={() => eliminar(incidencia.id)}
-          disabled={
-            user === incidencia.reportador.dni
-              ? false
-              : incidencia.responsable && user === incidencia.responsable.dni
-              ? false
-              : disabled
-          }
+          disabled={user === incidencia.reportador.dni ? false : disabled}
         />
       </div>
     </div>

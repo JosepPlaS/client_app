@@ -32,38 +32,45 @@ export default function MenuIncidencias({ openAlert }) {
     <div className="pagina">
       <TituloPagina
         icon={<AssignmentIcon fontSize="large" />}
+        text={"Menu incidencias:"}
+      />
+      <div className="bigButtons--container">
+        <BigButtonCustom
+          icon={<PersonIcon fontSize="large" />}
+          text="Mis incidencias"
+          onClick={() => navigate("propias")}
+        />
+        <BigButtonCustom
+          icon={<SsidChartIcon fontSize="large" />}
+          text="Ver registros"
+          onClick={() => navigate("registro")}
+          disabled={true}
+        />
+      </div>
+      <TituloPagina
+        icon={<AssignmentIcon fontSize="large" />}
         text={"Tipos de incidencias:"}
       />
       <div className="bigButtons--container">
         <BigButtonCustom
           icon={<AssignmentIcon fontSize="large" />}
           text={"Todas"}
-          onClick={() => navigate("todas")}
+          onClick={() => navigate("/incidencias/" + 0)}
         />
         <BigButtonCustom
           icon={<DesktopMacIcon fontSize="large" />}
           text={"Hardware"}
-          onClick={() => navigate("hardware")}
+          onClick={() => navigate("/incidencias/" + 1)}
         />
         <BigButtonCustom
           icon={<TerminalIcon fontSize="large" />}
           text={"Software"}
-          onClick={() => navigate("software")}
+          onClick={() => navigate("/incidencias/" + 2)}
         />
         <BigButtonCustom
           icon={<RouterIcon fontSize="large" />}
           text={"Internet"}
-          onClick={() => navigate("internet")}
-        />
-        <BigButtonCustom
-          icon={<PersonIcon fontSize="large" />}
-          text="Mis incidencias"
-          onClick={() => navigate("registro")}
-        />
-        <BigButtonCustom
-          icon={<SsidChartIcon fontSize="large" />}
-          text="Ver registro"
-          onClick={() => navigate("registro")}
+          onClick={() => navigate("/incidencias/" + 3)}
         />
       </div>
     </div>
