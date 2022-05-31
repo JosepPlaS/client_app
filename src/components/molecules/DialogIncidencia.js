@@ -170,6 +170,7 @@ export default function DialogIncidencia({
         .then((response) => {
           if (response.status === 200) {
             actualizar();
+            openAlert("Se ha modificado la incidencia.", "success");
             onClose();
           } else if (response.status === 402) {
             return response.json();
@@ -198,6 +199,7 @@ export default function DialogIncidencia({
         .then((response) => {
           if (response.status === 200) {
             actualizar();
+            openAlert("Se ha introducido la incidencia.", "success");
             onClose();
           } else if (response.status === 402) {
             return response.json();

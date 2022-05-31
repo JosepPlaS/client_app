@@ -19,7 +19,13 @@ import AlertCustom from "../atoms/AlertCustom";
 import "./Dialog.css";
 import SelectorCustom from "../atoms/SelectorCustom";
 
-export default function DialogProfesor({ open, onClose, actualizar, id }) {
+export default function DialogProfesor({
+  open,
+  onClose,
+  actualizar,
+  id,
+  disabled,
+}) {
   const [departamentos, setDepartamentos] = useState();
   const [roles, setRoles] = useState();
 
@@ -126,6 +132,10 @@ export default function DialogProfesor({ open, onClose, actualizar, id }) {
       .then((response) => {
         if (response.status === 200) {
           actualizar();
+          openAlert(
+            "Se ha " + (id ? "modificado" : "introducido") + " el profesor.",
+            "success"
+          );
           onClose();
         } else if (response.status === 402) {
           return response.json();
@@ -234,41 +244,43 @@ export default function DialogProfesor({ open, onClose, actualizar, id }) {
                 )}
               />
             </div>
-            <div className="dialog--twoColumn--row">
-              <Controller
-                name="departamento"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <SelectorCustom
-                    color={"text"}
-                    datos={departamentos}
-                    optionLabel={(option) => option.nombre}
-                    value={value}
-                    onChange={(event, option) => {
-                      onChange(option);
-                    }}
-                    label={"Departamento: "}
-                    errors={errors.departamento?.message}
-                    clear={true}
-                  />
-                )}
-              />
-              <Controller
-                name="rol"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <SelectorCustom
-                    color={"text"}
-                    datos={roles}
-                    optionLabel={(option) => option.nombre}
-                    value={value}
-                    onChange={(event, option) => onChange(option)}
-                    label={"Rol: "}
-                    errors={errors.rol?.message}
-                  />
-                )}
-              />
-            </div>
+            {!disabled && (
+              <div className="dialog--twoColumn--row">
+                <Controller
+                  name="departamento"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <SelectorCustom
+                      color={"text"}
+                      datos={departamentos}
+                      optionLabel={(option) => option.nombre}
+                      value={value}
+                      onChange={(event, option) => {
+                        onChange(option);
+                      }}
+                      label={"Departamento: "}
+                      errors={errors.departamento?.message}
+                      clear={true}
+                    />
+                  )}
+                />
+                <Controller
+                  name="rol"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <SelectorCustom
+                      color={"text"}
+                      datos={roles}
+                      optionLabel={(option) => option.nombre}
+                      value={value}
+                      onChange={(event, option) => onChange(option)}
+                      label={"Rol: "}
+                      errors={errors.rol?.message}
+                    />
+                  )}
+                />
+              </div>
+            )}
           </div>
           <div className="dialog--oneColumn--buttons--container">
             <div className="dialog--oneColumn--buttons">

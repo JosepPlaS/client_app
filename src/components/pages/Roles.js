@@ -10,6 +10,7 @@ import Cargando from "../atoms/Cargando";
 import DialogRol from "../molecules/DialogRol";
 import { useNavigate } from "react-router-dom";
 import TituloPagina from "../atoms/TituloPagina";
+import ConfirmDialog from "../molecules/ConfirmDialog";
 
 export default function Roles({ openAlert }) {
   const navigate = useNavigate();
@@ -123,6 +124,7 @@ export default function Roles({ openAlert }) {
     deleteRol(id)
       .then((response) => {
         if (response.status === 200) {
+          openAlert("Se ha eliminado el rol.", "success");
           actualizar();
         } else {
           return response.json();
@@ -136,6 +138,13 @@ export default function Roles({ openAlert }) {
         }
       });
   }
+
+  // CONFIRM DIALOG:
+  const [openConfirmar, setOpenConfirmar] = useState(false);
+
+  const handleCloseConfirmar = () => {
+    setOpenConfirmar(false);
+  };
 
   return (
     <div className="pagina">
@@ -157,7 +166,10 @@ export default function Roles({ openAlert }) {
             columnas={columnas}
             datos={filtrar(roles, filtro)}
             editar={(id) => btEditar(id)}
-            eliminar={(id) => btEliminar(id)}
+            eliminar={(id) => {
+              setRolId(id);
+              setOpenConfirmar(true);
+            }}
             perm={permiso}
             rol={true}
           />
@@ -167,6 +179,14 @@ export default function Roles({ openAlert }) {
             actualizar={actualizar}
             id={rolId}
             openAlert={openAlert}
+          />
+          <ConfirmDialog
+            aceptar={btEliminar}
+            open={openConfirmar}
+            onClose={handleCloseConfirmar}
+            title={"Eliminar rol"}
+            id={rolId}
+            text={"¿Seguro que deseas eliminar el rol?"}
           />
         </>
       ) : (

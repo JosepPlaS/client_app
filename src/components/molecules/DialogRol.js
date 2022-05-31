@@ -165,6 +165,10 @@ export default function DialogRol({ open, onClose, actualizar, id }) {
       .then((response) => {
         if (response.status === 200) {
           actualizar();
+          openAlert(
+            "Se ha " + (id ? "modificado" : "introducido") + " el rol.",
+            "success"
+          );
           onClose();
         } else if (response.status === 402) {
           return response.json();

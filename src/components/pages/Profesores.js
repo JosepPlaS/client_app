@@ -10,23 +10,20 @@ import { deleteProfesor, getProfesores } from "../../services/ProfesorAPI";
 import DialogProfesor from "../molecules/DialogProfesor";
 import TituloPagina from "../atoms/TituloPagina";
 import { useNavigate } from "react-router-dom";
+import BigButtonCustom from "../atoms/BigButtonCustom";
+import ConfirmDialog from "../molecules/ConfirmDialog";
 
 export default function Profesores({ openAlert }) {
   const navigate = useNavigate();
   const { setGlobal } = useContext(AppContext);
 
   const [permiso, setPermiso] = useState(0);
+  const [userActualId, setUserActualId] = useState();
 
   const [update, setUpdate] = useState(false);
 
-  const titulos = ["Nombre: ", "Dni: ", "Email: ", "Departamento: ", "Rol: "];
-  const columnas = [
-    "nombreCompleto",
-    "dni",
-    "email",
-    "departamentoNombre",
-    "rolNombre",
-  ];
+  const titulos = ["Nombre: ", "Departamento: ", "Rol: "];
+  const columnas = ["nombreCompleto", "departamentoNombre", "rolNombre"];
   const [profesores, setProfesores] = useState();
   const [filtro, setFiltro] = useState();
 
@@ -35,6 +32,7 @@ export default function Profesores({ openAlert }) {
   function comprobarPermisos() {
     let user = JSON.parse(sessionStorage.getItem("incidenciasUser"));
     if (user) {
+      setUserActualId(user.id);
       user.rol.nombre === "Administrador" ? setPermiso(2) : setPermiso(0);
     } else {
       navigate("");
@@ -59,6 +57,7 @@ export default function Profesores({ openAlert }) {
   }
 
   useEffect(() => {
+    comprobarPermisos();
     setGlobal((old) => ({
       ...old,
       pageTitle: (
@@ -68,7 +67,6 @@ export default function Profesores({ openAlert }) {
     getProfesores()
       .then((response) => response.json())
       .then((json) => setProfesores(formatProfesor(json)));
-    comprobarPermisos();
   }, [setGlobal, update]);
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -95,6 +93,7 @@ export default function Profesores({ openAlert }) {
     deleteProfesor(id)
       .then((response) => {
         if (response.status === 200) {
+          openAlert("Se ha eliminado el profesor.", "success");
           actualizar();
         } else {
           return response.json();
@@ -109,41 +108,74 @@ export default function Profesores({ openAlert }) {
       });
   }
 
+  // CONFIRM DIALOG:
+  const [openConfirmar, setOpenConfirmar] = useState(false);
+
+  const handleCloseConfirmar = () => {
+    setOpenConfirmar(false);
+  };
+
   return (
     <div className="pagina">
-      <TituloPagina
-        icon={<PersonIcon fontSize="large" />}
-        text={"Lista de profesores:"}
-      />
-      {profesores ? (
+      {permiso !== 0 ? (
         <>
-          <BuscarAnadir
-            filtro={setFiltro}
-            crear={btCrear}
-            actualizar={actualizar}
-            disableCrear={permiso < 1}
+          {" "}
+          <TituloPagina
+            icon={<PersonIcon fontSize="large" />}
+            text={"Lista de profesores:"}
           />
-          <Tabla
-            idLabel={"id"}
-            titulos={titulos}
-            columnas={columnas}
-            datos={filtrar(profesores, filtro)}
-            editar={(id) => btEditar(id)}
-            eliminar={(id) => btEliminar(id)}
-            perm={permiso}
-            profesor={true}
-          />
-          <DialogProfesor
-            open={openDialog}
-            onClose={handleCloseDialog}
-            actualizar={actualizar}
-            id={profesorId}
-            openAlert={openAlert}
-          />
+          {profesores ? (
+            <>
+              <BuscarAnadir
+                filtro={setFiltro}
+                crear={btCrear}
+                actualizar={actualizar}
+                disableCrear={permiso < 1}
+              />
+              <Tabla
+                idLabel={"id"}
+                titulos={titulos}
+                columnas={columnas}
+                datos={filtrar(profesores, filtro)}
+                editar={(id) => btEditar(id)}
+                eliminar={(id) => {
+                  setProfesorId(id);
+                  setOpenConfirmar(true);
+                }}
+                perm={permiso}
+                profesor={true}
+              />
+            </>
+          ) : (
+            <Cargando texto="Cargando profesores." />
+          )}
         </>
       ) : (
-        <Cargando texto="Cargando profesores." />
+        <div className="bigButtons--container">
+          <BigButtonCustom
+            icon={<PersonIcon fontSize="large" />}
+            text="Editar perfil"
+            onClick={() => btEditar(userActualId)}
+          />
+        </div>
       )}
+
+      <DialogProfesor
+        open={openDialog}
+        onClose={handleCloseDialog}
+        actualizar={actualizar}
+        id={profesorId}
+        openAlert={openAlert}
+        disabled={permiso === 0}
+      />
+      <ConfirmDialog
+        aceptar={btEliminar}
+        open={openConfirmar}
+        onClose={handleCloseConfirmar}
+        title={"Eliminar profesor"}
+        id={profesorId}
+        text={"¿Seguro que deseas eliminar al profesor?"}
+      />
     </div>
   );
 }

@@ -41,9 +41,19 @@ export default function DialogIncidencia({
     .object({
       observaciones: yup
         .string()
+        .typeError("Introduce observaciones.")
+        .required("Introduce observaciones.")
         .max(250, "No puede contener mas de 250 caracteres."),
-      fecha_finalizacion: yup.date().required("Introduce una fecha."),
-      tiempo_invertido: yup.number().required("Introduce el tiempo invertido."),
+      fecha_finalizacion: yup
+        .date()
+        .required("Introduce una fecha.")
+        .typeError("Introduce una fecha válida."),
+      tiempo_invertido: yup
+        .number()
+        .min(0, "No puede ser un valor negativo.")
+        .max(999, "Pues si que te ha costado...")
+        .typeError("Introduce el tiempo invertido.")
+        .required("Introduce el tiempo invertido."),
     })
     .required();
 
@@ -89,6 +99,10 @@ export default function DialogIncidencia({
         .then((response) => {
           if (response.status === 200) {
             actualizar();
+            openAlert(
+              "Se ha finalizado la incidencia e informado a su reportador.",
+              "success"
+            );
             onClose();
           } else if (response.status === 402) {
             return response.json();
@@ -102,6 +116,10 @@ export default function DialogIncidencia({
         .then((response) => {
           if (response.status === 200) {
             actualizar();
+            openAlert(
+              "Se ha finalizado la incidencia e informado a su reportador.",
+              "success"
+            );
             onClose();
           } else if (response.status === 402) {
             return response.json();
@@ -138,8 +156,23 @@ export default function DialogIncidencia({
                 )}
               />
             </div>
-
             <div className="dialog--twoColumn--row">
+              <Controller
+                name="tiempo_invertido"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <TextFieldCustom
+                    className="textFieldCustom--time"
+                    color={"text"}
+                    label={"Tiempo (h): "}
+                    value={value}
+                    onChange={onChange}
+                    type="number"
+                    errors={errors.tiempo_invertido?.message}
+                  />
+                )}
+              />
+
               <RadioGroup
                 row
                 value={estado}
@@ -160,20 +193,6 @@ export default function DialogIncidencia({
                   />
                 </div>
               </RadioGroup>
-              <Controller
-                name="tiempo_invertido"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <TextFieldCustom
-                    color={"text"}
-                    label={"Horas invertidas: "}
-                    value={value}
-                    onChange={onChange}
-                    type="number"
-                    errors={errors.tiempo_invertido?.message}
-                  />
-                )}
-              />
             </div>
           </div>
           <div className="dialog--oneColumn--buttons--container">

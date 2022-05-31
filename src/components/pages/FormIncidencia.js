@@ -133,16 +133,17 @@ export default function FormIncidencia({ openAlert }) {
     setUpdate((old) => !old);
   }
 
-  function cambiarResponsable(responsable) {
+  function cambiarResponsable(responsable, sai) {
     setIncidencia((old) => {
       const user = JSON.parse(sessionStorage.getItem("incidenciasUser"));
       let tmp = old;
       tmp.responsable = responsable;
+      tmp.sai = sai;
       tmp.historial +=
         "{UwU}" +
         moment(Date.now()).format("DD-MM-YY") +
         " Responsable " +
-        (responsable ? responsable.email : "SAI") +
+        (sai ? responsable.email + " con ayuda del SAI," : responsable.email) +
         " asignado por: " +
         user.email;
       return tmp;
@@ -150,12 +151,22 @@ export default function FormIncidencia({ openAlert }) {
     putResponsable(params.id, incidencia)
       .then((response) => {
         if (response.status === 200) {
+          openAlert(
+            "Se ha asignado al responsable y se le ha informado a el y al reportador.",
+            "success"
+          );
           actualizar();
         } else {
           return response.json();
         }
       })
-      .then((json) => json && console.log(json.message));
+      .then((json) => {
+        if (json) {
+          json.message
+            ? openAlert(json.message, "error")
+            : openAlert("No se ha podido asignar al responsable.", "error");
+        }
+      });
   }
 
   function cambiarEstado(estado) {
@@ -173,12 +184,25 @@ export default function FormIncidencia({ openAlert }) {
     putEstadoIncidencia(params.id, incidencia)
       .then((response) => {
         if (response.status === 200) {
+          openAlert(
+            "Se ha cambiado el estado de la incidencia e informado al reportador.",
+            "success"
+          );
           actualizar();
         } else {
           return response.json();
         }
       })
-      .then((json) => json && console.log(json.message));
+      .then((json) => {
+        if (json) {
+          json.message
+            ? openAlert(json.message, "error")
+            : openAlert(
+                "No se ha podido cambiar el estado de la incidencia.",
+                "error"
+              );
+        }
+      });
   }
 
   function workingOn() {
@@ -196,12 +220,25 @@ export default function FormIncidencia({ openAlert }) {
     putWorkingOn(params.id, incidencia)
       .then((response) => {
         if (response.status === 200) {
+          openAlert(
+            "Se ha cambiado el estado de la incidencia e informado al reportador.",
+            "success"
+          );
           actualizar();
         } else {
           return response.json();
         }
       })
-      .then((json) => json && console.log(json.message));
+      .then((json) => {
+        if (json) {
+          json.message
+            ? openAlert(json.message, "error")
+            : openAlert(
+                "No se ha podido cambiar el estado de la incidencia.",
+                "error"
+              );
+        }
+      });
   }
 
   return (
@@ -270,32 +307,42 @@ export default function FormIncidencia({ openAlert }) {
               disabled={true}
             />
           </div>
-          <TituloPagina
-            icon={<SettingsIcon fontSize="large" />}
-            text={"Opciones Administrador:"}
-          />
-          <div className="bigButtons--container">
-            <BigButtonCustom
-              icon={<EditIcon fontSize="large" />}
-              text={"Modificar incidencia"}
-              onClick={() => setOpenDialog(true)}
-              disabled={
-                permiso < 2 && userActual.dni !== incidencia.reportador.dni
-              }
-            />
-            <BigButtonCustom
-              icon={<ContactsIcon fontSize="large" />}
-              text={"Seleccionar responsable"}
-              onClick={() => setOpenDialogSelRes(true)}
-              disabled={permiso < 2}
-            />
-            <BigButtonCustom
-              icon={<AutorenewIcon fontSize="large" />}
-              text={"Cambiar estado"}
-              onClick={() => setOpenDialogSelEst(true)}
-              disabled={permiso < 2}
-            />
-          </div>
+          {!(
+            permiso < 2 &&
+            userActual.dni !== incidencia.reportador.dni &&
+            incidencia.estado.codigo !== "Solucionada"
+          ) ? (
+            <>
+              <TituloPagina
+                icon={<SettingsIcon fontSize="large" />}
+                text={"Opciones Administrador:"}
+              />
+              <div className="bigButtons--container">
+                <BigButtonCustom
+                  icon={<EditIcon fontSize="large" />}
+                  text={"Modificar incidencia"}
+                  onClick={() => setOpenDialog(true)}
+                  disabled={
+                    permiso < 2 && userActual.dni !== incidencia.reportador.dni
+                  }
+                />
+                <BigButtonCustom
+                  icon={<ContactsIcon fontSize="large" />}
+                  text={"Seleccionar responsable"}
+                  onClick={() => setOpenDialogSelRes(true)}
+                  disabled={permiso < 2}
+                />
+                <BigButtonCustom
+                  icon={<AutorenewIcon fontSize="large" />}
+                  text={"Cambiar estado"}
+                  onClick={() => setOpenDialogSelEst(true)}
+                  disabled={permiso < 2}
+                />
+              </div>
+            </>
+          ) : (
+            ""
+          )}
           <DialogIncidencia
             open={openDialog}
             onClose={handleCloseDialog}

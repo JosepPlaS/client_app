@@ -84,6 +84,7 @@ export default function Incidencias({ openAlert }) {
       .then((response) => {
         if (response.status === 200) {
           actualizar();
+          openAlert("Se ha eliminado la incidencia.", "success");
         } else {
           return response.json();
         }

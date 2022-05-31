@@ -68,7 +68,7 @@
 }
 
 .alertCustom{
-    position: absolute;
+    position: fixed;
     left: 0;
     bottom: 0;
     margin-left: 20px;
@@ -153,6 +153,10 @@
 
 .textFieldCustom--fullSize{
     width: 100%;
+}
+
+.textFieldCustom--time{
+    width: 130px;
 }
 
 

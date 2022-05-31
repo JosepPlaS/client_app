@@ -43,6 +43,14 @@ export function getIncidencia(id) {
   return fetch("/api/incidencia/get/" + id, request);
 }
 
+export function getEstadisticas(anyo) {
+  const request = {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  };
+  return fetch("/api/incidencia/get/estadisticas/" + anyo, request);
+}
+
 export function postIncidencia(datos) {
   const request = {
     method: "POST",

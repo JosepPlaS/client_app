@@ -71,6 +71,12 @@ export default function DialogDepartamento({ open, onClose, actualizar, id }) {
       .then((response) => {
         if (response.status === 200) {
           actualizar();
+          openAlert(
+            "Se ha " +
+              (id ? "modificado" : "introducido") +
+              " el departamento.",
+            "success"
+          );
           onClose();
         } else if (response.status === 402) {
           return response.json();

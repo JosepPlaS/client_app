@@ -43,8 +43,7 @@ export default function MenuIncidencias({ openAlert }) {
         <BigButtonCustom
           icon={<SsidChartIcon fontSize="large" />}
           text="Ver registros"
-          onClick={() => navigate("registro")}
-          disabled={true}
+          onClick={() => navigate("/incidencias/registros")}
         />
       </div>
       <TituloPagina

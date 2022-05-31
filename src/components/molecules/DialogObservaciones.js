@@ -77,15 +77,23 @@ export default function DialogIncidencia({
     putIncidencia(id, tmp)
       .then((response) => {
         if (response.status === 200) {
+          openAlert("Se han modificado las observaciones.", "success");
           actualizar();
           onClose();
-        } else if (response.status === 402) {
-          return response.json();
         } else {
-          openAlert("No se ha podido modificar la incidencia.", "error");
+          return response.json();
         }
       })
-      .then((json) => json && openAlert(json.message, "error"));
+      .then((json) => {
+        if (json) {
+          json.message
+            ? openAlert(json.message, "error")
+            : openAlert(
+                "No se han podido modificar las observaciones.",
+                "error"
+              );
+        }
+      });
   };
 
   return (

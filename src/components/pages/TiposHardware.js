@@ -13,6 +13,7 @@ import {
 import DialogTipoHardware from "../molecules/DialogTipoHardware";
 import TituloPagina from "../atoms/TituloPagina";
 import { useNavigate } from "react-router-dom";
+import ConfirmDialog from "../molecules/ConfirmDialog";
 export default function TiposHardware({ openAlert }) {
   const navigate = useNavigate();
   const { setGlobal } = useContext(AppContext);
@@ -82,6 +83,7 @@ export default function TiposHardware({ openAlert }) {
       .then((response) => {
         if (response.status === 200) {
           actualizar();
+          openAlert("Se ha eliminado el tipo de hardware.", "success");
         } else {
           return response.json();
         }
@@ -97,6 +99,13 @@ export default function TiposHardware({ openAlert }) {
         }
       });
   }
+
+  // CONFIRM DIALOG:
+  const [openConfirmar, setOpenConfirmar] = useState(false);
+
+  const handleCloseConfirmar = () => {
+    setOpenConfirmar(false);
+  };
 
   return (
     <div className="pagina">
@@ -118,7 +127,10 @@ export default function TiposHardware({ openAlert }) {
             columnas={columnas}
             datos={filtrar(tipos_hardware, filtro)}
             editar={(id) => btEditar(id)}
-            eliminar={(id) => btEliminar(id)}
+            eliminar={(id) => {
+              setTipoHwId(id);
+              setOpenConfirmar(true);
+            }}
             perm={permiso}
           />
           <DialogTipoHardware
@@ -127,6 +139,14 @@ export default function TiposHardware({ openAlert }) {
             actualizar={actualizar}
             id={tipoHwId}
             openAlert={openAlert}
+          />
+          <ConfirmDialog
+            aceptar={btEliminar}
+            open={openConfirmar}
+            onClose={handleCloseConfirmar}
+            title={"Eliminar tipo de hardware"}
+            id={tipoHwId}
+            text={"¿Seguro que deseas eliminar el tipo de hardware?"}
           />
         </>
       ) : (

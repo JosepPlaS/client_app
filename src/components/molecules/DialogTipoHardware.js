@@ -67,6 +67,12 @@ export default function DialogTipoHardware({ open, onClose, actualizar, id }) {
       .then((response) => {
         if (response.status === 200) {
           actualizar();
+          openAlert(
+            "Se ha " +
+              (id ? "modificado" : "introducido") +
+              " el tipo de hardware.",
+            "success"
+          );
           onClose();
         } else if (response.status === 402) {
           return response.json();
@@ -74,7 +80,7 @@ export default function DialogTipoHardware({ open, onClose, actualizar, id }) {
           openAlert(
             "No se ha podido " +
               (id ? "modificar" : "introducir") +
-              " el departamento.",
+              " el tipo de hardware.",
             "error"
           );
         }

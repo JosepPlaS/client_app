@@ -13,6 +13,7 @@ import {
 import DialogDepartamento from "../molecules/DialogDepartamento";
 import TituloPagina from "../atoms/TituloPagina";
 import { useNavigate } from "react-router-dom";
+import ConfirmDialog from "../molecules/ConfirmDialog";
 
 export default function Departamentos({ openAlert }) {
   const navigate = useNavigate();
@@ -80,6 +81,7 @@ export default function Departamentos({ openAlert }) {
     deleteDepartamento(id)
       .then((response) => {
         if (response.status === 200) {
+          openAlert("Se ha eliminado el departamento.", "success");
           actualizar();
         } else {
           return response.json();
@@ -93,6 +95,13 @@ export default function Departamentos({ openAlert }) {
         }
       });
   }
+
+  // CONFIRM DIALOG:
+  const [openConfirmar, setOpenConfirmar] = useState(false);
+
+  const handleCloseConfirmar = () => {
+    setOpenConfirmar(false);
+  };
 
   return (
     <div className="pagina">
@@ -114,7 +123,10 @@ export default function Departamentos({ openAlert }) {
             columnas={columnas}
             datos={filtrar(departamentos, filtro)}
             editar={(id) => btEditar(id)}
-            eliminar={(id) => btEliminar(id)}
+            eliminar={(id) => {
+              setDepartamentoId(id);
+              setOpenConfirmar(true);
+            }}
             perm={permiso}
           />
           <DialogDepartamento
@@ -123,6 +135,14 @@ export default function Departamentos({ openAlert }) {
             actualizar={actualizar}
             id={departamentoId}
             openAlert={openAlert}
+          />
+          <ConfirmDialog
+            aceptar={btEliminar}
+            open={openConfirmar}
+            onClose={handleCloseConfirmar}
+            title={"Eliminar departamento"}
+            id={departamentoId}
+            text={"¿Seguro que deseas eliminar el departamento?"}
           />
         </>
       ) : (

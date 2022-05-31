@@ -14,6 +14,8 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 
 import "./Card.css";
 import ButtonCustomCard from "../atoms/ButtonCustomCard";
+import { useState } from "react";
+import ConfirmDialog from "./ConfirmDialog";
 
 export default function CardIncidencia({
   incidencia,
@@ -22,6 +24,15 @@ export default function CardIncidencia({
   user,
   disabled,
 }) {
+  // CONFIRM DIALOG:
+  const [openConfirmar, setOpenConfirmar] = useState(false);
+
+  console.log(incidencia);
+
+  const handleCloseConfirmar = () => {
+    setOpenConfirmar(false);
+  };
+
   return (
     <div className="card">
       <div className="card--title">
@@ -37,7 +48,7 @@ export default function CardIncidencia({
           ) : (
             <QuestionMarkIcon />
           )}
-          <div>Incidencia:</div>
+          <div>Incidencia{incidencia.sai && " (SAI)"}:</div>
         </div>
         {incidencia.codigo}
       </div>
@@ -74,7 +85,7 @@ export default function CardIncidencia({
       <div className="card--line">
         <div className="card--label">
           <PersonIcon fontSize="small" />
-          <div> Responsable:</div>
+          <div> Responsable:&nbsp; </div>
         </div>
         <div className="card--data">
           {incidencia.responsableNombre || "No asignado"}
@@ -97,10 +108,18 @@ export default function CardIncidencia({
         <ButtonCustomCard
           icon={<DeleteOutlineOutlinedIcon fontSize="small" />}
           label="Eliminar"
-          onClick={() => eliminar(incidencia.id)}
-          disabled={user === incidencia.reportador.dni ? false : disabled}
+          onClick={() => setOpenConfirmar(true)}
+          disabled={disabled}
         />
       </div>
+      <ConfirmDialog
+        aceptar={eliminar}
+        open={openConfirmar}
+        onClose={handleCloseConfirmar}
+        title={"Eliminar incidencia"}
+        id={incidencia.id}
+        text={"¿Seguro que deseas eliminar la incidencia?"}
+      />
     </div>
   );
 }

@@ -48,8 +48,10 @@ export default function DialogTipoHardware({
             </div>
             <ButtonCustom
               onClick={() => {
-                actualizar(undefined);
-                onClose();
+                if (responsable) {
+                  actualizar(responsable, true);
+                  onClose();
+                }
               }}
               variant="contained"
               color="info"
@@ -64,7 +66,7 @@ export default function DialogTipoHardware({
                 color={"success"}
                 onClick={() => {
                   if (responsable) {
-                    actualizar(responsable);
+                    actualizar(responsable, false);
                     onClose();
                   }
                 }}

@@ -14,6 +14,7 @@ import AlertCustom from "./components/atoms/AlertCustom";
 import Incidencias from "./components/pages/Incidencias";
 import IncidenciasUser from "./components/pages/IncidenciasUser";
 import FormIncidencia from "./components/pages/FormIncidencia";
+import Registros from "./components/pages/Registros";
 
 const theme = createTheme({
   palette: {
@@ -91,7 +92,11 @@ export default function App() {
               path="/incidencias/propias"
               element={<IncidenciasUser openAlert={openAlert} />}
             />
-            <Route path="/incidencia/:id" element={<FormIncidencia />} />
+            <Route
+              path="/incidencia/:id"
+              element={<FormIncidencia openAlert={openAlert} />}
+            />
+            <Route path="/incidencias/registros" element={<Registros />} />
             <Route
               path="/profesores"
               element={<Profesores openAlert={openAlert} />}

@@ -16,6 +16,7 @@ import moment from "moment";
 
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import HandymanIcon from "@mui/icons-material/Handyman";
 
 import "./Card.css";
 import { useState } from "react";
@@ -40,7 +41,7 @@ export default function CardIncidenciaDetalle({ incidencia }) {
       <div className="card--title">
         <div className="card--title--label">
           <AssignmentIcon />
-          <div>Incidencia:</div>
+          <div>Incidencia{incidencia.sai && " (SAI)"}:</div>
         </div>
         {incidencia.codigo}
       </div>
@@ -75,7 +76,7 @@ export default function CardIncidenciaDetalle({ incidencia }) {
           <div>Reportador:</div>
         </div>
         <div className="card--data">
-          {incidencia.reportador && incidencia.reportador.email !== "root"
+          {incidencia.reportador
             ? incidencia.reportador.nombre +
               " " +
               incidencia.reportador.apellido1 +
@@ -191,28 +192,58 @@ export default function CardIncidenciaDetalle({ incidencia }) {
             : "No asignado"}
         </div>
       </div>
-      <div className="card--line">
-        <div className="card--label">
-          <CalendarMonthIcon fontSize="small" />
-          <div>Fecha de finalización:</div>
-        </div>
-        <div className="card--data">
-          {incidencia.fecha_finalizacion
-            ? moment(incidencia.fecha_finalizacion).format("DD-MM-YYYY")
-            : "No finalizada"}
-        </div>
-      </div>
-      <div className="card--line">
-        <div className="card--label">
-          <AccessTimeOutlinedIcon fontSize="small" />
-          <div>Tiempo invertido:</div>
-        </div>
-        <div className="card--data">
-          {incidencia.tiempo_invertido !== null
-            ? incidencia.tiempo_invertido + " horas"
-            : "No especificado"}
-        </div>
-      </div>
+      {incidencia.estado.codigo === "Solucionada" ||
+      incidencia.estado.codigo === "Solución inviable" ? (
+        <>
+          {incidencia.sai && (
+            <div className="card--line">
+              <div className="card--label">
+                <HandymanIcon fontSize="small" />
+                <div>SAI:</div>
+              </div>
+              <div className="card--data">
+                Esta incidencia fue asignada al SAI
+              </div>
+            </div>
+          )}
+          <div className="card--line">
+            <div className="card--label">
+              <CalendarMonthIcon fontSize="small" />
+              <div>Fecha de finalización:</div>
+            </div>
+            <div className="card--data">
+              {incidencia.fecha_finalizacion
+                ? moment(incidencia.fecha_finalizacion).format("DD-MM-YYYY")
+                : "No finalizada"}
+            </div>
+          </div>
+          <div className="card--line">
+            <div className="card--label">
+              <AccessTimeOutlinedIcon fontSize="small" />
+              <div>Tiempo invertido:</div>
+            </div>
+            <div className="card--data">
+              {incidencia.tiempo_invertido !== null
+                ? incidencia.tiempo_invertido + " horas"
+                : "No especificado"}
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          {incidencia.sai && (
+            <div className="card--line">
+              <div className="card--label">
+                <HandymanIcon fontSize="small" />
+                <div>SAI:</div>
+              </div>
+              <div className="card--data">
+                Esta incidencia esta asignada al SAI
+              </div>
+            </div>
+          )}
+        </>
+      )}
       <div className="card--line">
         <div className="card--label">
           <DescriptionOutlinedIcon fontSize="small" />
